@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Hand -->
+  <path d="M9 12v6a3 3 0 0 0 6 0v-6"/>
+  <path d="M9 12V7a3 3 0 0 1 6 0v5"/>
+  <path d="M9 7V4a3 3 0 0 1 6 0v3"/>
+  <!-- Touch indicator -->
+  <circle cx="12" cy="4" r="1"/>
+  <path d="M12 3v-1"/>
+</svg>

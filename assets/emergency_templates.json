@@ -1,0 +1,193 @@
+{
+  "version": "3.0",
+  "last_updated": "2025-01-27",
+  "templates": {
+    "accident": {
+      "category": "Accident Alert",
+      "icon": "🚗",
+      "urgency_level": "CRITICAL",
+      "problem_description": "Accident occurred, user is injured and needs urgent help",
+      "special_instructions": "Call 911 immediately and provide medical assistance",
+      "sms_template": "🚨 EMERGENCY ALERT (TERAX AI) 🚨\n\n🚗 Accident Alert\n\nUser: {{user_name}}\nProblem: {{problem_description}}\nTime: {{timestamp}}\nLocation: {{address}}\nGPS: {{gps_link}}\n\n{{special_instructions}}\n\nStay Alert. Stay Safe.\n- TERAX AI",
+      "whatsapp_template": "🚨 *EMERGENCY ALERT (from TERAX AI)* 🚨\n\nThis is an automated emergency message sent by *TERAX AI*. The user is facing an emergency and requires *immediate assistance*.\n\n🚗 *Accident Alert*\n📱 *User:* {{user_name}}\n⏰ *Time:* {{timestamp}}\n🎯 *Problem:* {{problem_description}}\n📍 *Current Location:* {{address}}\n🗺️ *Live GPS Location:* {{gps_link}}\n\n⚡ *URGENT ACTION REQUIRED:*\n{{special_instructions}}\n\nPlease respond *immediately* to assist the user.\n\n*Stay Alert. Stay Safe.*\n*- TERAX AI Emergency System*",
+      "email_subject": "🚨 EMERGENCY ALERT: Accident Alert - {{user_name}}",
+      "email_template": "🚨 EMERGENCY ALERT (from TERAX AI) 🚨\n\nThis is an automated emergency message sent by TERAX AI. The user is facing an emergency and requires immediate assistance.\n\n🚗 Accident Alert\n\nUser: {{user_name}}\nTime: {{timestamp}}\nProblem: {{problem_description}}\nCurrent Location: {{address}}\nLive GPS Location: {{gps_link}}\n\n⚡ IMMEDIATE ACTION REQUIRED:\n{{special_instructions}}\n\nPlease respond immediately to assist the user.\n\nStay Alert. Stay Safe.\n- TERAX AI Emergency System\n\nThis is an automated message. Please take immediate action.",
+      "priority": 1,
+      "auto_call_911": true,
+      "requires_medical": true
+    },
+    "medical_emergency": {
+      "category": "Medical Emergency",
+      "icon": "🏥",
+      "urgency_level": "CRITICAL",
+      "problem_description": "Sudden health issue, needs immediate medical attention",
+      "special_instructions": "Call emergency medical services immediately",
+      "sms_template": "🚨 EMERGENCY ALERT (TERAX AI) 🚨\n\n🏥 Medical Emergency\n\nUser: {{user_name}}\nProblem: {{problem_description}}\nTime: {{timestamp}}\nLocation: {{address}}\nGPS: {{gps_link}}\n\n{{special_instructions}}\n\nStay Alert. Stay Safe.\n- TERAX AI",
+      "whatsapp_template": "🚨 *EMERGENCY ALERT (from TERAX AI)* 🚨\n\nThis is an automated emergency message sent by *TERAX AI*. The user is experiencing a *medical emergency*.\n\n🏥 *Medical Emergency*\n📱 *User:* {{user_name}}\n⏰ *Time:* {{timestamp}}\n🎯 *Problem:* {{problem_description}}\n📍 *Current Location:* {{address}}\n🗺️ *Live GPS Location:* {{gps_link}}\n\n⚡ *URGENT ACTION REQUIRED:*\n{{special_instructions}}\n\nPlease respond *immediately* to assist the user.\n\n*Stay Alert. Stay Safe.*\n*- TERAX AI Emergency System*",
+      "email_subject": "🚨 EMERGENCY ALERT: Medical Emergency - {{user_name}}",
+      "priority": 1,
+      "auto_call_911": true,
+      "requires_medical": true
+    },
+    "personal_safety": {
+      "category": "Personal Safety Threat",
+      "icon": "⚠️",
+      "urgency_level": "HIGH",
+      "problem_description": "Possible threat detected, user feels unsafe",
+      "special_instructions": "Contact user immediately and consider calling police",
+      "sms_template": "🚨 EMERGENCY ALERT (TERAX AI) 🚨\n\n⚠️ Personal Safety Threat\n\nUser: {{user_name}}\nProblem: {{problem_description}}\nTime: {{timestamp}}\nLocation: {{address}}\nGPS: {{gps_link}}\n\n{{special_instructions}}\n\nStay Alert. Stay Safe.\n- TERAX AI",
+      "whatsapp_template": "🚨 *EMERGENCY ALERT (from TERAX AI)* 🚨\n\nThis is an automated emergency message sent by *TERAX AI*. The user is in *danger* and needs urgent help.\n\n⚠️ *Personal Safety Threat*\n📱 *User:* {{user_name}}\n⏰ *Time:* {{timestamp}}\n🎯 *Problem:* {{problem_description}}\n📍 *Current Location:* {{address}}\n🗺️ *Live GPS Location:* {{gps_link}}\n\n⚡ *URGENT ACTION REQUIRED:*\n{{special_instructions}}\n\nPlease respond *immediately* to assist the user.\n\n*Stay Alert. Stay Safe.*\n*- TERAX AI Emergency System*",
+      "email_subject": "🚨 EMERGENCY ALERT: Personal Safety Threat - {{user_name}}",
+      "priority": 2,
+      "auto_call_911": false,
+      "requires_police": true
+    },
+    "fire_emergency": {
+      "category": "Fire Emergency",
+      "icon": "🔥",
+      "urgency_level": "CRITICAL",
+      "problem_description": "Fire detected, urgent evacuation needed",
+      "special_instructions": "Call fire department immediately",
+      "sms_template": "🚨 EMERGENCY ALERT (TERAX AI) 🚨\n\n🔥 Fire Emergency\n\nUser: {{user_name}}\nProblem: {{problem_description}}\nTime: {{timestamp}}\nLocation: {{address}}\nGPS: {{gps_link}}\n\n{{special_instructions}}\n\nStay Alert. Stay Safe.\n- TERAX AI",
+      "whatsapp_template": "🚨 *EMERGENCY ALERT (from TERAX AI)* 🚨\n\nThis is an automated emergency message sent by *TERAX AI*. A *fire emergency* has been reported.\n\n🔥 *Fire Emergency*\n📱 *User:* {{user_name}}\n⏰ *Time:* {{timestamp}}\n🎯 *Problem:* {{problem_description}}\n📍 *Current Location:* {{address}}\n🗺️ *Live GPS Location:* {{gps_link}}\n\n⚡ *URGENT ACTION REQUIRED:*\n{{special_instructions}}\n\nPlease respond *immediately* to assist the user.\n\n*Stay Alert. Stay Safe.*\n*- TERAX AI Emergency System*",
+      "email_subject": "🚨 EMERGENCY ALERT: Fire Emergency - {{user_name}}",
+      "priority": 1,
+      "auto_call_911": true,
+      "requires_fire_dept": true
+    },
+    "trapped_stuck": {
+      "category": "Stuck/Trapped Situation",
+      "icon": "🆘",
+      "urgency_level": "HIGH",
+      "problem_description": "User is trapped and needs urgent rescue",
+      "special_instructions": "Contact rescue services and provide exact location",
+      "sms_template": "🚨 EMERGENCY ALERT (TERAX AI) 🚨\n\n🆘 Stuck/Trapped Situation\n\nUser: {{user_name}}\nProblem: {{problem_description}}\nTime: {{timestamp}}\nLocation: {{address}}\nGPS: {{gps_link}}\n\n{{special_instructions}}\n\nStay Alert. Stay Safe.\n- TERAX AI",
+      "whatsapp_template": "🚨 *EMERGENCY ALERT (from TERAX AI)* 🚨\n\nThis is an automated emergency message sent by *TERAX AI*. The user is *trapped or stuck*.\n\n🆘 *Stuck/Trapped Situation*\n📱 *User:* {{user_name}}\n⏰ *Time:* {{timestamp}}\n🎯 *Problem:* {{problem_description}}\n📍 *Current Location:* {{address}}\n🗺️ *Live GPS Location:* {{gps_link}}\n\n⚡ *URGENT ACTION REQUIRED:*\n{{special_instructions}}\n\nPlease respond *immediately* to assist the user.\n\n*Stay Alert. Stay Safe.*\n*- TERAX AI Emergency System*",
+      "email_subject": "🚨 EMERGENCY ALERT: Stuck/Trapped Situation - {{user_name}}",
+      "priority": 2,
+      "auto_call_911": true,
+      "requires_rescue": true
+    },
+    "stalking": {
+      "category": "Stalking/Following",
+      "icon": "👁️",
+      "urgency_level": "HIGH",
+      "problem_description": "User is being followed or stalked, immediate safety concern",
+      "special_instructions": "Contact police and ensure user reaches safe location",
+      "sms_template": "🚨 EMERGENCY ALERT (TERAX AI) 🚨\n\n👁️ Stalking/Following\n\nUser: {{user_name}}\nProblem: {{problem_description}}\nTime: {{timestamp}}\nLocation: {{address}}\nGPS: {{gps_link}}\n\n{{special_instructions}}\n\nStay Alert. Stay Safe.\n- TERAX AI",
+      "whatsapp_template": "🚨 *EMERGENCY ALERT (from TERAX AI)* 🚨\n\nThis is an automated emergency message sent by *TERAX AI*. The user is being *followed or stalked*.\n\n👁️ *Stalking/Following*\n📱 *User:* {{user_name}}\n⏰ *Time:* {{timestamp}}\n🎯 *Problem:* {{problem_description}}\n📍 *Current Location:* {{address}}\n🗺️ *Live GPS Location:* {{gps_link}}\n\n⚡ *URGENT ACTION REQUIRED:*\n{{special_instructions}}\n\nPlease respond *immediately* to assist the user.\n\n*Stay Alert. Stay Safe.*\n*- TERAX AI Emergency System*",
+      "email_subject": "🚨 EMERGENCY ALERT: Stalking/Following - {{user_name}}",
+      "priority": 2,
+      "auto_call_911": false,
+      "requires_police": true,
+      "stealth_mode": true
+    },
+    "domestic_violence": {
+      "category": "Domestic Violence",
+      "icon": "🏠",
+      "urgency_level": "CRITICAL",
+      "problem_description": "Domestic violence situation, user needs immediate protection",
+      "special_instructions": "Contact police and domestic violence hotline immediately",
+      "sms_template": "🚨 EMERGENCY ALERT (TERAX AI) 🚨\n\n🏠 Domestic Violence\n\nUser: {{user_name}}\nProblem: {{problem_description}}\nTime: {{timestamp}}\nLocation: {{address}}\nGPS: {{gps_link}}\n\n{{special_instructions}}\n\nStay Alert. Stay Safe.\n- TERAX AI",
+      "whatsapp_template": "🚨 *EMERGENCY ALERT (from TERAX AI)* 🚨\n\nThis is an automated emergency message sent by *TERAX AI*. *Domestic violence situation* detected.\n\n🏠 *Domestic Violence*\n📱 *User:* {{user_name}}\n⏰ *Time:* {{timestamp}}\n🎯 *Problem:* {{problem_description}}\n📍 *Current Location:* {{address}}\n🗺️ *Live GPS Location:* {{gps_link}}\n\n⚡ *URGENT ACTION REQUIRED:*\n{{special_instructions}}\n\nPlease respond *immediately* to assist the user.\n\n*Stay Alert. Stay Safe.*\n*- TERAX AI Emergency System*",
+      "email_subject": "🚨 EMERGENCY ALERT: Domestic Violence - {{user_name}}",
+      "priority": 1,
+      "auto_call_911": true,
+      "requires_police": true,
+      "requires_dv_hotline": true,
+      "stealth_mode": true
+    },
+    "child_danger": {
+      "category": "Child in Danger",
+      "icon": "👶",
+      "urgency_level": "CRITICAL",
+      "problem_description": "Child is in immediate danger and needs protection",
+      "special_instructions": "Contact police and child protective services immediately",
+      "sms_template": "🚨 EMERGENCY ALERT (TERAX AI) 🚨\n\n👶 Child in Danger\n\nUser: {{user_name}}\nProblem: {{problem_description}}\nTime: {{timestamp}}\nLocation: {{address}}\nGPS: {{gps_link}}\n\n{{special_instructions}}\n\nStay Alert. Stay Safe.\n- TERAX AI",
+      "whatsapp_template": "🚨 *EMERGENCY ALERT (from TERAX AI)* 🚨\n\nThis is an automated emergency message sent by *TERAX AI*. A *child is in immediate danger*.\n\n👶 *Child in Danger*\n📱 *User:* {{user_name}}\n⏰ *Time:* {{timestamp}}\n🎯 *Problem:* {{problem_description}}\n📍 *Current Location:* {{address}}\n🗺️ *Live GPS Location:* {{gps_link}}\n\n⚡ *URGENT ACTION REQUIRED:*\n{{special_instructions}}\n\nPlease respond *immediately* to assist the user.\n\n*Stay Alert. Stay Safe.*\n*- TERAX AI Emergency System*",
+      "email_subject": "🚨 EMERGENCY ALERT: Child in Danger - {{user_name}}",
+      "priority": 1,
+      "auto_call_911": true,
+      "requires_police": true,
+      "requires_cps": true
+    },
+    "mental_health_crisis": {
+      "category": "Mental Health Crisis",
+      "icon": "🧠",
+      "urgency_level": "CRITICAL",
+      "problem_description": "Mental health emergency, risk of self-harm detected",
+      "special_instructions": "Contact crisis hotline and emergency services",
+      "sms_template": "🚨 EMERGENCY ALERT (TERAX AI) 🚨\n\n🧠 Mental Health Crisis\n\nUser: {{user_name}}\nProblem: {{problem_description}}\nTime: {{timestamp}}\nLocation: {{address}}\nGPS: {{gps_link}}\n\n{{special_instructions}}\n\nStay Alert. Stay Safe.\n- TERAX AI",
+      "whatsapp_template": "🚨 *EMERGENCY ALERT (from TERAX AI)* 🚨\n\nThis is an automated emergency message sent by *TERAX AI*. *Mental health emergency* detected.\n\n🧠 *Mental Health Crisis*\n📱 *User:* {{user_name}}\n⏰ *Time:* {{timestamp}}\n🎯 *Problem:* {{problem_description}}\n📍 *Current Location:* {{address}}\n🗺️ *Live GPS Location:* {{gps_link}}\n\n⚡ *URGENT ACTION REQUIRED:*\n{{special_instructions}}\n\nPlease respond *immediately* to assist the user.\n\n*Stay Alert. Stay Safe.*\n*- TERAX AI Emergency System*",
+      "email_subject": "🚨 EMERGENCY ALERT: Mental Health Crisis - {{user_name}}",
+      "priority": 1,
+      "auto_call_911": true,
+      "requires_crisis_hotline": true,
+      "requires_mental_health": true
+    },
+    "human_trafficking": {
+      "category": "Human Trafficking",
+      "icon": "🚨",
+      "urgency_level": "CRITICAL",
+      "problem_description": "Possible human trafficking situation detected",
+      "special_instructions": "Contact FBI and local law enforcement immediately",
+      "sms_template": "🚨 EMERGENCY ALERT (TERAX AI) 🚨\n\n🚨 Human Trafficking\n\nUser: {{user_name}}\nProblem: {{problem_description}}\nTime: {{timestamp}}\nLocation: {{address}}\nGPS: {{gps_link}}\n\n{{special_instructions}}\n\nStay Alert. Stay Safe.\n- TERAX AI",
+      "whatsapp_template": "🚨 *EMERGENCY ALERT (from TERAX AI)* 🚨\n\nThis is an automated emergency message sent by *TERAX AI*. *Possible human trafficking* situation detected.\n\n🚨 *Human Trafficking*\n📱 *User:* {{user_name}}\n⏰ *Time:* {{timestamp}}\n🎯 *Problem:* {{problem_description}}\n📍 *Current Location:* {{address}}\n🗺️ *Live GPS Location:* {{gps_link}}\n\n⚡ *URGENT ACTION REQUIRED:*\n{{special_instructions}}\n\nPlease respond *immediately* to assist the user.\n\n*Stay Alert. Stay Safe.*\n*- TERAX AI Emergency System*",
+      "email_subject": "🚨 EMERGENCY ALERT: Human Trafficking - {{user_name}}",
+      "priority": 1,
+      "auto_call_911": true,
+      "requires_fbi": true,
+      "requires_police": true,
+      "stealth_mode": true
+    },
+    "general_emergency": {
+      "category": "General Emergency",
+      "icon": "🚨",
+      "urgency_level": "HIGH",
+      "problem_description": "Emergency situation detected, user needs immediate help",
+      "special_instructions": "Respond immediately and assess situation",
+      "sms_template": "🚨 EMERGENCY ALERT (TERAX AI) 🚨\n\n🚨 General Emergency\n\nUser: {{user_name}}\nProblem: {{problem_description}}\nTime: {{timestamp}}\nLocation: {{address}}\nGPS: {{gps_link}}\n\n{{special_instructions}}\n\nStay Alert. Stay Safe.\n- TERAX AI",
+      "whatsapp_template": "🚨 *EMERGENCY ALERT (from TERAX AI)* 🚨\n\nThis is an automated emergency message sent by *TERAX AI*. The user is facing an emergency.\n\n🚨 *General Emergency*\n📱 *User:* {{user_name}}\n⏰ *Time:* {{timestamp}}\n🎯 *Problem:* {{problem_description}}\n📍 *Current Location:* {{address}}\n🗺️ *Live GPS Location:* {{gps_link}}\n\n⚡ *URGENT ACTION REQUIRED:*\n{{special_instructions}}\n\nPlease respond *immediately* to assist the user.\n\n*Stay Alert. Stay Safe.*\n*- TERAX AI Emergency System*",
+      "email_subject": "🚨 EMERGENCY ALERT: General Emergency - {{user_name}}",
+      "priority": 2,
+      "auto_call_911": false
+    }
+  },
+  "placeholders": {
+    "user_name": "Name of the user in emergency",
+    "timestamp": "Date and time of emergency",
+    "problem_description": "Description of the emergency problem",
+    "address": "Current address or location description",
+    "gps_link": "Google Maps link with GPS coordinates",
+    "special_instructions": "Specific instructions for this emergency type",
+    "confidence_score": "AI confidence percentage",
+    "threat_level": "Assessed threat level",
+    "voice_analysis": "Voice analysis results",
+    "behavioral_indicators": "Behavioral analysis indicators"
+  },
+  "emergency_contacts": {
+    "911": "Emergency Services (US)",
+    "988": "Suicide & Crisis Lifeline (US)",
+    "1-800-799-7233": "National Domestic Violence Hotline (US)",
+    "1-888-373-7888": "National Human Trafficking Hotline (US)",
+    "1-800-4-A-CHILD": "Childhelp National Child Abuse Hotline (US)"
+  },
+  "api_integration": {
+    "endpoint": "/api/emergency/send",
+    "method": "POST",
+    "required_fields": [
+      "emergency_type",
+      "user_name",
+      "location",
+      "phone_numbers",
+      "email_addresses"
+    ],
+    "optional_fields": [
+      "latitude",
+      "longitude",
+      "confidence_score",
+      "threat_level",
+      "additional_context"
+    ]
+  }
+}

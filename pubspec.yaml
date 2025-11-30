@@ -1,0 +1,133 @@
+name: terax_ai_app
+description: "Terax AI - Personal Safety App - Privacy-focused personal safety app providing instant emergency response via voice, gesture, and AI-powered facial distress detection."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.4 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # Core Flutter
+  cupertino_icons: ^1.0.8
+
+  # State Management & Navigation
+  provider: ^6.1.1
+  go_router: ^16.1.0
+  
+  # Local Storage & Database
+  shared_preferences: ^2.5.3
+  sqflite: ^2.3.2
+  path: ^1.8.3
+  
+  # HTTP & Networking
+  http: ^1.5.0
+  dio: ^5.7.0
+  connectivity_plus: ^6.1.5
+  
+  # Location & Maps
+  geolocator: ^14.0.2
+  geocoding: ^4.0.0
+  
+  # Permissions & Device Features
+  permission_handler: ^11.0.0 # Corrected version constraint
+  device_info_plus: ^11.5.0
+  
+  # Audio & Video
+  camera: ^0.11.2
+  audioplayers: ^6.5.0
+  speech_to_text: 7.3.0
+  flutter_sound: ^9.2.13
+  
+  # UI & Animations
+  flutter_svg: ^2.0.13
+  lottie: ^3.0.0
+  shimmer: ^3.0.0
+  
+  # Utilities
+  intl: ^0.20.2
+  url_launcher: ^6.2.4
+  package_info_plus: ^8.3.1
+  flutter_contacts: ^1.1.7+1
+  json_annotation: ^4.9.0
+  path_provider: ^2.1.3
+  logging: ^1.2.0
+  
+  # SMS and Phone (using url_launcher)
+  
+  # Security & Authentication
+  crypto: ^3.0.3
+  local_auth: ^2.3.0
+  local_auth_android: ^1.0.38
+  local_auth_darwin: ^1.4.1
+  flutter_secure_storage: 9.2.2
+
+  # SMS & Communication
+  twilio_flutter: ^0.9.0
+  
+  # Haptics & Sensors
+  vibration: ^3.1.3
+  sensors_plus: ^6.1.2
+  shake: ^3.0.0
+  
+  # Charts & Data Visualization
+  fl_chart: ^1.0.0
+  
+  # Image Processing
+  image: ^4.1.7
+  image_picker: ^1.0.7 # Added as per requirement
+  
+  # QR Code
+  qr_flutter: ^4.1.0
+  
+  # Local Notifications
+  flutter_local_notifications: ^19.4.0
+
+  # Background Tasks & Environment
+  workmanager: 0.9.0+3
+  flutter_dotenv: ^5.1.0
+  
+  # SMS & Communication (using url_launcher above)
+  
+  # Maps
+  google_maps_flutter: ^2.9.0
+  
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  mockito: ^5.4.4
+  build_runner: ^2.4.13 # Kept current version as it's latest stable
+  json_serializable: ^6.8.0
+  integration_test:
+    sdk: flutter
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/app_icon.png"
+  adaptive_icon_foreground: "assets/icons/app_icon_foreground.png"
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/images/
+    - assets/animations/
+    - assets/icons/
+    - assets/lottie/
+    - assets/emergency_templates.json
+  
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700

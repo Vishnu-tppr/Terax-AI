@@ -1,0 +1,14 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 12C2 13.6569 2.63214 15.2569 3.75736 16.4853C4.88258 17.7137 6.4087 18.4817 8.05 18.6C9.6913 18.7183 11.3087 18.1893 12.5 17.1C13.6913 16.0107 14.3087 14.4817 14.05 12.85" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M21 12C21 13.6569 20.3679 15.2569 19.2426 16.4853C18.1174 17.7137 16.5913 18.4817 14.95 18.6C13.3087 18.7183 11.6913 18.1893 10.5 17.1C9.3087 16.0107 8.6913 14.4817 8.95 12.85" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8 13C8 14.1046 8.44772 15.1652 9.25736 15.9749C10.067 16.7845 11.1739 17.2609 12.3 17.3C13.4261 17.3391 14.5348 16.9304 15.4 16.15C16.2652 15.3696 16.8261 14.2826 16.95 13.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M17 13C17 14.1046 16.5523 15.1652 15.7426 15.9749C14.933 16.7845 13.8261 17.2609 12.7 17.3C11.5739 17.3391 10.4652 16.9304 9.6 16.15C8.7348 15.3696 8.1739 14.2826 8.05 13.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+<path d="M12 1V3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<path d="M21 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<path d="M3 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<path d="M18.364 5.636L16.95 7.05" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<path d="M7.05 16.95L5.636 18.364" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<path d="M16.95 16.95L18.364 18.364" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<path d="M7.05 7.05L5.636 5.636" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</svg>
