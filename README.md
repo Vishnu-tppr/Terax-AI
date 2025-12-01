@@ -46,9 +46,20 @@
 ## 📸 Demo Screenshots
 
 <p align="center">
-  <img src="assets/screens/screen1.png" width="300" />
-  <img src="assets/screens/screen2.png" width="300" />
-  <img src="assets/screens/screen3.png" width="300" />
+  <img src="https://github.com/user-attachments/assets/bd1508ec-aed7-4fed-8951-56eb3c2b530f" width="300" />
+  <img src="https://github.com/user-attachments/assets/98375e2f-8361-48eb-b9b8-8e9a1cda1406" width="300" />
+  <img src="https://github.com/user-attachments/assets/7c2ba9d6-8da6-4eb9-b7a5-ed1114d59eb2" width="300" />
+  <img src="https://github.com/user-attachments/assets/8eeced3a-91d2-4d2a-9388-7479ddd39522" width="300" />
+  <img src="https://github.com/user-attachments/assets/7dc33b67-b38c-4c6c-bc40-e38a9a9cb779" width="300" />
+  <img src="https://github.com/user-attachments/assets/cdeb4e6e-8b0d-4164-b1c0-fd762fbe3593" width="300" />
+  <img src="https://github.com/user-attachments/assets/ca7326ee-e5a7-4412-80f8-01b098f05230" width="300" />
+  <img src="https://github.com/user-attachments/assets/9cbabd06-8c95-423f-814e-45e6a620d4b2" width="300" />
+  <img src="https://github.com/user-attachments/assets/5ac19980-d848-4b37-8a69-913998cd017e" width="300" />
+  <img src="https://github.com/user-attachments/assets/d9d888f0-80d1-4526-8235-da6544a35cbb" width="300" />
+  <img src="https://github.com/user-attachments/assets/28e1e66b-af1b-4956-86d6-2de897fa5b14" width="300" />
+  <img src="https://github.com/user-attachments/assets/8688e601-5ce3-43cb-a429-11041ba30b3b" width="300" />
+  <img src="https://github.com/user-attachments/assets/096199eb-d9c3-4185-9f6a-e983f423d173" width="300" />
+  <img src="https://github.com/user-attachments/assets/9fae92d9-3c85-4714-838a-459dfcf44a72" width="300" />
 </p>
 
 *(Replace with your actual images)*
