@@ -42,7 +42,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     if (mounted) {
       if (success) {
-        context.go('/main');
+        if (authProvider.isLoggedIn) {
+          context.go('/main');
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Account created. If email confirmation is enabled, verify your email and then sign in.',
+              ),
+              backgroundColor: Colors.green,
+            ),
+          );
+          context.go('/signin');
+        }
       } else if (authProvider.error != null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

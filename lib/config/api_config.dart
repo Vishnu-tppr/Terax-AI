@@ -117,6 +117,10 @@ class ApiConfig {
 class EnvironmentConfig {
   static const bool isProduction = bool.fromEnvironment('dart.vm.product');
   static const bool isDebug = !isProduction;
+  static const String backendBaseUrl = String.fromEnvironment(
+    'BACKEND_BASE_URL',
+    defaultValue: 'http://localhost:8000',
+  );
 
   /// API endpoints
   static const String geminiApiBaseUrl =
@@ -125,6 +129,7 @@ class EnvironmentConfig {
   /// Timeouts
   static const Duration apiTimeout = Duration(seconds: 30);
   static const Duration emergencyTimeout = Duration(seconds: 10);
+  static const Duration authTimeout = Duration(seconds: 15);
 
   /// Rate limiting
   static const int maxApiCallsPerMinute = 60;

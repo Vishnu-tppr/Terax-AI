@@ -46,6 +46,8 @@ app.*.map.json
 
 # Environment variables
 .env
+.venv/
+venv/
 
 # Large files
 cmdlinetools.zip
