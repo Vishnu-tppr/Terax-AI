@@ -82,8 +82,13 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Skip when no integration tests exist
+      if: ${{ hashFiles('integration_test/**') == '' }}
+      run: echo "No integration_test directory found. Skipping integration tests."
       
     - name: Setup Flutter
+      if: ${{ hashFiles('integration_test/**') != '' }}
       uses: subosito/flutter-action@v2
       with:
         flutter-version: ${{ env.FLUTTER_VERSION }}
@@ -91,14 +96,17 @@ jobs:
         cache: true
         
     - name: Get dependencies
+      if: ${{ hashFiles('integration_test/**') != '' }}
       run: flutter pub get
       
     - name: Start iOS Simulator
+      if: ${{ hashFiles('integration_test/**') != '' }}
       run: |
         xcrun simctl list
         xcrun simctl boot "${{ matrix.device }}" || true
         
     - name: Run integration tests
+      if: ${{ hashFiles('integration_test/**') != '' }}
       run: flutter test integration_test/
       env:
         DEVICE_ID: ${{ matrix.device }}
@@ -206,9 +214,11 @@ jobs:
       run: npm install
       
     - name: Run linting
+      if: ${{ hashFiles('backend/.eslintrc', 'backend/.eslintrc.js', 'backend/.eslintrc.cjs', 'backend/.eslintrc.json', 'backend/eslint.config.js', 'backend/eslint.config.cjs', 'backend/eslint.config.mjs') != '' }}
       run: npm run lint --if-present
       
     - name: Run tests
+      if: ${{ hashFiles('backend/tests/**', 'backend/**/*.test.js', 'backend/**/*.spec.js', 'backend/**/*.test.cjs', 'backend/**/*.spec.cjs') != '' }}
       run: npm test --if-present
       env:
         NODE_ENV: test
