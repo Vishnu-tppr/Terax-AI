@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:speech_to_text/speech_to_text.dart';
+// import 'package:speech_to_text/speech_to_text.dart';  // Not available on Windows
 import 'package:permission_handler/permission_handler.dart';
 
 class VoiceProvider extends ChangeNotifier {
@@ -10,7 +11,7 @@ class VoiceProvider extends ChangeNotifier {
   double _sensitivity = 0.8;
   bool _isBackgroundListening = false;
 
-  late SpeechToText _speechToText;
+  late dynamic _speechToText;  // Using dynamic since speech_to_text not available on Windows
   bool _speechEnabled = false;
   String _lastWords = '';
   Function(String)? _onTriggerDetected;
@@ -25,24 +26,29 @@ class VoiceProvider extends ChangeNotifier {
   String get lastWords => _lastWords;
 
   VoiceProvider() {
-    _speechToText = SpeechToText();
-    _initSpeech();
+    // Voice recognition not available on Windows platform
+    _speechToText = null;
     _loadVoiceSettings();
   }
 
   void _initSpeech() async {
-    _speechEnabled = await _speechToText.initialize(
-      onStatus: (status) {
-        if (kDebugMode) {
-          print('Speech status: $status');
-        }
-      },
-      onError: (error) {
-        if (kDebugMode) {
-          print('Speech error: $error');
-        }
-      },
-    );
+    if (_speechToText == null) return;
+    try {
+      _speechEnabled = await _speechToText.initialize(
+        onStatus: (status) {
+          if (kDebugMode) {
+            debugPrint('Speech status: $status');
+          }
+        },
+        onError: (error) {
+          if (kDebugMode) {
+            debugPrint('Speech error: $error');
+          }
+        },
+      );
+    } catch (e) {
+      debugPrint('Error initializing speech: $e');
+    }
     notifyListeners();
   }
 
@@ -65,7 +71,7 @@ class VoiceProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       if (kDebugMode) {
-        print('Error loading voice settings: $e');
+        debugPrint('Error loading voice settings: $e');
       }
     }
   }
@@ -79,7 +85,7 @@ class VoiceProvider extends ChangeNotifier {
       await prefs.setStringList('trigger_phrases', _triggerPhrases);
     } catch (e) {
       if (kDebugMode) {
-        print('Error saving voice settings: $e');
+        debugPrint('Error saving voice settings: $e');
       }
     }
   }

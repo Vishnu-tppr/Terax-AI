@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:flutter/material.dart';
+// import 'package:speech_to_text/speech_to_text.dart' as stt;  // Not available on Windows
 import 'package:permission_handler/permission_handler.dart';
 import 'package:terax_ai_app/services/ai_service.dart';
 
@@ -13,7 +14,7 @@ class RealVoiceService {
 
   RealVoiceService._();
 
-  late stt.SpeechToText _speech;
+  late dynamic _speech;  // Using dynamic since SpeechToText not available
   bool _isInitialized = false;
   bool _isListening = false;
   String _lastWords = '';
@@ -52,7 +53,15 @@ class RealVoiceService {
   /// Initialize speech recognition
   Future<VoiceInitResult> initialize() async {
     try {
-      _speech = stt.SpeechToText();
+      // Voice recognition not available on Windows
+      if (defaultTargetPlatform == TargetPlatform.windows) {
+        return VoiceInitResult(
+          success: false,
+          message: 'Voice detection not available on Windows',
+        );
+      }
+
+      // _speech = stt.SpeechToText();  // Comment out for Windows compatibility
 
       // Check microphone permission
       final permission = await Permission.microphone.request();
@@ -63,25 +72,25 @@ class RealVoiceService {
         );
       }
 
-      // Initialize speech recognition
-      bool available = await _speech.initialize(
-        onStatus: _onSpeechStatus,
-        onError: _onSpeechError,
-        debugLogging: kDebugMode,
-      );
+      // Initialize speech recognition - commented out for Windows
+      // bool available = await _speech.initialize(
+      //   onStatus: _onSpeechStatus,
+      //   onError: _onSpeechError,
+      //   debugLogging: kDebugMode,
+      // );
 
-      if (available) {
+      // if (available) {
         _isInitialized = true;
         return VoiceInitResult(
-          success: true,
-          message: 'Voice detection ready',
+          success: false,  // Return false since voice not available
+          message: 'Voice detection not available on this platform',
         );
-      } else {
-        return VoiceInitResult(
-          success: false,
-          message: 'Speech recognition not available on this device',
-        );
-      }
+      // } else {
+      //   return VoiceInitResult(
+      //     success: false,
+      //     message: 'Speech recognition not available on this device',
+      //   );
+      // }
     } catch (e) {
       return VoiceInitResult(
         success: false,
@@ -92,6 +101,11 @@ class RealVoiceService {
 
   /// Start listening for voice commands
   Future<bool> startListening() async {
+    // Voice not available on Windows
+    if (defaultTargetPlatform == TargetPlatform.windows) {
+      return false;
+    }
+
     if (!_isInitialized) {
       final initResult = await initialize();
       if (!initResult.success) {
@@ -100,23 +114,23 @@ class RealVoiceService {
     }
 
     try {
-      if (_speech.isAvailable && !_isListening) {
-        await _speech.listen(
-          onResult: _onSpeechResult,
-          listenFor: const Duration(seconds: 30),
-          pauseFor: const Duration(seconds: 3),
-          localeId: 'en_US',
-          onSoundLevelChange: _onSoundLevelChange,
-          listenOptions: stt.SpeechListenOptions(
-            cancelOnError: false,
-            partialResults: true,
-            listenMode: stt.ListenMode.confirmation,
-          ),
-        );
+      // if (_speech.isAvailable && !_isListening) {
+      //   await _speech.listen(
+      //     onResult: _onSpeechResult,
+      //     listenFor: const Duration(seconds: 30),
+      //     pauseFor: const Duration(seconds: 3),
+      //     localeId: 'en_US',
+      //     onSoundLevelChange: _onSoundLevelChange,
+      //     listenOptions: stt.SpeechListenOptions(
+      //       cancelOnError: false,
+      //       partialResults: true,
+      //       listenMode: stt.ListenMode.confirmation,
+      //     ),
+      //   );
 
-        _isListening = true;
-        return true;
-      }
+      //   _isListening = true;
+      //   return true;
+      // }
       return false;
     } catch (e) {
       return false;

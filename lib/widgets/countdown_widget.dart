@@ -19,9 +19,7 @@ class CountdownWidget extends StatefulWidget {
 class _CountdownWidgetState extends State<CountdownWidget>
     with TickerProviderStateMixin {
   late AnimationController _pulseController;
-  late AnimationController _progressController;
   late Animation<double> _pulseAnimation;
-  late Animation<double> _progressAnimation;
 
   @override
   void initState() {
@@ -29,11 +27,6 @@ class _CountdownWidgetState extends State<CountdownWidget>
 
     _pulseController = AnimationController(
       duration: const Duration(milliseconds: 1000),
-      vsync: this,
-    );
-
-    _progressController = AnimationController(
-      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
 
@@ -45,21 +38,12 @@ class _CountdownWidgetState extends State<CountdownWidget>
       curve: Curves.easeInOut,
     ));
 
-    _progressAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _progressController,
-      curve: Curves.easeInOut,
-    ));
-
     _pulseController.repeat(reverse: true);
   }
 
   @override
   void dispose() {
     _pulseController.dispose();
-    _progressController.dispose();
     super.dispose();
   }
 
@@ -70,14 +54,10 @@ class _CountdownWidgetState extends State<CountdownWidget>
       builder: (context, snapshot) {
         final isActive = CountdownService.instance.isActive;
         final remainingSeconds = CountdownService.instance.remainingSeconds;
-        final progress = CountdownService.instance.progress;
 
         if (!isActive) {
           return const SizedBox.shrink();
         }
-
-        // Update progress animation
-        _progressController.animateTo(progress);
 
         return Container(
           width: double.infinity,
@@ -118,39 +98,17 @@ class _CountdownWidgetState extends State<CountdownWidget>
                             width: 8,
                           ),
                         ),
-                        child: Stack(
-                          children: [
-                            // Progress indicator
-                            AnimatedBuilder(
-                              animation: _progressAnimation,
-                              builder: (context, child) {
-                                return CircularProgressIndicator(
-                                  value: _progressAnimation.value,
-                                  strokeWidth: 8,
-                                  backgroundColor: Colors.transparent,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    remainingSeconds <= 3
-                                        ? AppTheme.primaryRed
-                                        : AppTheme.warningAmber,
-                                  ),
-                                );
-                              },
+                        child: Center(
+                          child: Text(
+                            '$remainingSeconds',
+                            style: TextStyle(
+                              color: remainingSeconds <= 3
+                                  ? AppTheme.primaryRed
+                                  : Colors.white,
+                              fontSize: 72,
+                              fontWeight: FontWeight.bold,
                             ),
-
-                            // Countdown number
-                            Center(
-                              child: Text(
-                                '$remainingSeconds',
-                                style: TextStyle(
-                                  color: remainingSeconds <= 3
-                                      ? AppTheme.primaryRed
-                                      : Colors.white,
-                                  fontSize: 72,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                     );
