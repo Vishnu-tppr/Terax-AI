@@ -361,7 +361,7 @@ class _AddContactDialogState extends State<AddContactDialog> {
                             value: _isPrimary,
                             onChanged: (value) =>
                                 setState(() => _isPrimary = value),
-                            activeColor: AppTheme.primaryRed,
+                            activeThumbColor: AppTheme.primaryRed,
                           ),
                         ],
                       ),

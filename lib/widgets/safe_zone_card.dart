@@ -61,7 +61,7 @@ class SafeZoneCard extends StatelessWidget {
                   Switch(
                     value: zone.isActive,
                     onChanged: onToggle,
-                    activeColor: AppTheme.primaryGreen,
+                    activeThumbColor: AppTheme.primaryGreen,
                   ),
                 ],
               ),

@@ -24,12 +24,12 @@ class ApiConfig {
       }
 
       if (kDebugMode) {
-        print('API key loaded from storage successfully');
+        debugPrint('API key loaded from storage successfully');
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Error loading API key from storage: $e');
-        print('NOTE: App will continue with limited AI features');
+        debugPrint('Error loading API key from storage: $e');
+        debugPrint('NOTE: App will continue with limited AI features');
       }
       // Don't rethrow - allow app to continue without API key
     }
@@ -43,11 +43,11 @@ class ApiConfig {
       _cachedApiKey = apiKey;
 
       if (kDebugMode) {
-        print('Gemini API key saved securely');
+        debugPrint('Gemini API key saved securely');
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Error saving API key: $e');
+        debugPrint('Error saving API key: $e');
       }
       throw Exception('Failed to save API key securely');
     }
@@ -65,7 +65,7 @@ class ApiConfig {
       return _cachedApiKey;
     } catch (e) {
       if (kDebugMode) {
-        print('Error retrieving API key: $e');
+        debugPrint('Error retrieving API key: $e');
       }
       return null;
     }
@@ -85,11 +85,11 @@ class ApiConfig {
       _cachedApiKey = null;
 
       if (kDebugMode) {
-        print('Gemini API key cleared');
+        debugPrint('Gemini API key cleared');
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Error clearing API key: $e');
+        debugPrint('Error clearing API key: $e');
       }
     }
   }
@@ -194,16 +194,16 @@ class ApiKeyManager {
       return _currentStatus;
     } on TimeoutException catch (e) {
       if (kDebugMode) {
-        print('API key validation timeout: $e');
-        print('NOTE: Treating as network issue - validation deferred');
+        debugPrint('API key validation timeout: $e');
+        debugPrint('NOTE: Treating as network issue - validation deferred');
       }
       _currentStatus =
           ApiKeyStatus.notSet; // Default to not set to avoid blocking
       return _currentStatus;
     } catch (e) {
       if (kDebugMode) {
-        print('API key validation error: $e');
-        print('NOTE: Treating as network issue - validation deferred');
+        debugPrint('API key validation error: $e');
+        debugPrint('NOTE: Treating as network issue - validation deferred');
       }
       _currentStatus =
           ApiKeyStatus.notSet; // Default to not set to avoid blocking

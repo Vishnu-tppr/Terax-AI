@@ -124,7 +124,7 @@ jobs:
       uses: actions/setup-java@v3
       with:
         distribution: 'zulu'
-        java-version: '17'
+        java-version: '21'
         
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
@@ -246,7 +246,7 @@ jobs:
       with:
         status: ${{ job.status }}
         channel: '#deployments'
-        slack-webhook-url: ${{ secrets.SLACK_WEBHOOK }}
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
 
   deploy_production:
     name: Deploy to Production

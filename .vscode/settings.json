@@ -19,5 +19,19 @@
         }
     },
     "cmake.sourceDirectory": "C:/Projects/terax_ai_app/linux",
-    "cmake.ignoreCMakeListsMissing": true
+    "cmake.ignoreCMakeListsMissing": true,
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-25",
+            "path": "C:/JDK/jdk-25.0.2",
+            "default": true
+        }
+    ],
+    "java.home": "C:/JDK/jdk-25.0.2",
+    "[java]": {
+        "editor.defaultFormatter": "redhat.java",
+        "editor.formatOnSave": true,
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        "editor.inlayHints.enabled": "offUnlessPressed"
+    }
 }

@@ -399,7 +399,7 @@ class _SafetyScreenState extends State<SafetyScreen>
                       Switch(
                         value: voiceProvider.isVoiceEnabled,
                         onChanged: (value) => voiceProvider.toggleVoice(),
-                        activeColor: Theme.of(context).colorScheme.primary,
+                        activeThumbColor: Theme.of(context).colorScheme.primary,
                       ),
                     ],
                   ),

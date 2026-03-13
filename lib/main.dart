@@ -25,7 +25,7 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
 
     if (kDebugMode) {
-      print('Initializing TeraxAI App...');
+      debugPrint('Initializing TeraxAI App...');
     }
 
     // Initialize API key for immediate use (non-blocking)
@@ -33,20 +33,20 @@ void main() async {
       await ApiConfig.initializeWithApiKey()
           .timeout(const Duration(seconds: 15));
       if (kDebugMode) {
-        print('API configuration initialized successfully');
+        debugPrint('API configuration initialized successfully');
       }
     } on TimeoutException catch (apiError) {
       if (kDebugMode) {
-        print(
+        debugPrint(
             'API initialization timeout, continuing with app startup: $apiError');
-        print(
+        debugPrint(
             'NOTE: Gemini API key validation failed - app will work with limited features.');
       }
     } catch (apiError) {
       if (kDebugMode) {
-        print(
+        debugPrint(
             'API initialization failed, continuing with app startup: $apiError');
-        print(
+        debugPrint(
             'NOTE: Gemini API key may not be configured. This is OK for basic app functionality.');
       }
     }
@@ -54,8 +54,8 @@ void main() async {
     runApp(const TeraxAIApp());
   } catch (e, stackTrace) {
     if (kDebugMode) {
-      print('❌ FATAL ERROR during app startup: $e');
-      print('📋 STACK TRACE: $stackTrace');
+      debugPrint('❌ FATAL ERROR during app startup: $e');
+      debugPrint('📋 STACK TRACE: $stackTrace');
     }
 
     // Run a minimal error app in debug mode to show the error on screen
@@ -78,7 +78,7 @@ class TeraxAIApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (kDebugMode) {
-      print('Building TeraxAIApp with providers...');
+      debugPrint('Building TeraxAIApp with providers...');
     }
 
     return MultiProvider(
@@ -86,7 +86,7 @@ class TeraxAIApp extends StatelessWidget {
         // Core authentication provider (modified for better error handling)
         ChangeNotifierProvider(create: (_) {
           if (kDebugMode) {
-            print('Creating AuthProvider...');
+            debugPrint('Creating AuthProvider...');
           }
           return AuthProvider();
         }),
@@ -94,7 +94,7 @@ class TeraxAIApp extends StatelessWidget {
         // Settings provider (essential for theme and basic settings)
         ChangeNotifierProvider(create: (_) {
           if (kDebugMode) {
-            print('Creating SettingsProvider...');
+            debugPrint('Creating SettingsProvider...');
           }
           return SettingsProvider();
         }),
@@ -102,43 +102,43 @@ class TeraxAIApp extends StatelessWidget {
         // Start with basic providers first, then add others later
         ChangeNotifierProvider(create: (_) {
           if (kDebugMode) {
-            print('Creating ContactsProvider...');
+            debugPrint('Creating ContactsProvider...');
           }
           return ContactsProvider();
         }),
         ChangeNotifierProvider(create: (_) {
           if (kDebugMode) {
-            print('Creating IncidentsProvider...');
+            debugPrint('Creating IncidentsProvider...');
           }
           return IncidentsProvider();
         }),
         ChangeNotifierProvider(create: (_) {
           if (kDebugMode) {
-            print('Creating SafetyProvider...');
+            debugPrint('Creating SafetyProvider...');
           }
           return SafetyProvider();
         }),
         ChangeNotifierProvider(create: (_) {
           if (kDebugMode) {
-            print('Creating LocationProvider...');
+            debugPrint('Creating LocationProvider...');
           }
           return LocationProvider();
         }),
         ChangeNotifierProvider(create: (_) {
           if (kDebugMode) {
-            print('Creating VoiceProvider...');
+            debugPrint('Creating VoiceProvider...');
           }
           return VoiceProvider();
         }),
         ChangeNotifierProvider(create: (_) {
           if (kDebugMode) {
-            print('Creating SafeZonesProvider...');
+            debugPrint('Creating SafeZonesProvider...');
           }
           return SafeZonesProvider();
         }),
         Provider(create: (_) {
           if (kDebugMode) {
-            print('Creating EmergencyContactsService...');
+            debugPrint('Creating EmergencyContactsService...');
           }
           return EmergencyContactsService();
         }),
