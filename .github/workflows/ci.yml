@@ -240,13 +240,6 @@ jobs:
       run: |
         echo "Deploying backend to staging environment..."
         # Add your deployment commands here
-        
-    - name: Notify deployment
-      uses: 8398a7/action-slack@v3
-      with:
-        status: ${{ job.status }}
-        channel: '#deployments'
-        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
 
   deploy_production:
     name: Deploy to Production
