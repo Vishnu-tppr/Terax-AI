@@ -189,7 +189,7 @@ jobs:
         output: 'trivy-results.sarif'
         
     - name: Upload Trivy scan results to GitHub Security tab
-      uses: github/codeql-action/upload-sarif@v2
+      uses: github/codeql-action/upload-sarif@v3
       if: always()
       with:
         sarif_file: 'trivy-results.sarif'
@@ -218,8 +218,8 @@ jobs:
       run: npm run lint --if-present
       
     - name: Run tests
-      if: ${{ hashFiles('backend/tests/**') != '' }}
-      run: npm test --if-present
+      run: npm test -- --passWithNoTests
+      if: always()
       env:
         NODE_ENV: test
         TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
