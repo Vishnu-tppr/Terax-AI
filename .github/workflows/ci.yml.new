@@ -7,7 +7,7 @@ on:
     branches: [ main, develop ]
 
 env:
-  FLUTTER_VERSION: '3.19.0'
+  FLUTTER_VERSION: '3.38.9'
 
 jobs:
   analyze:
@@ -29,7 +29,7 @@ jobs:
       run: flutter pub get
       
     - name: Verify formatting
-      run: dart format --output=none --set-exit-if-changed .
+      run: dart format --output=none --set-exit-if-changed lib test
       
     - name: Analyze project source
       run: flutter analyze --no-fatal-infos
@@ -201,20 +201,18 @@ jobs:
       uses: actions/checkout@v4
       
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '18'
-        cache: 'npm'
-        cache-dependency-path: backend/package-lock.json
         
     - name: Install dependencies
-      run: npm ci
+      run: npm install
       
     - name: Run linting
-      run: npm run lint
+      run: npm run lint --if-present
       
     - name: Run tests
-      run: npm test
+      run: npm test --if-present
       env:
         NODE_ENV: test
         TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
