@@ -35,7 +35,9 @@ class _AddContactScreenState extends State<AddContactScreen> {
     final contactsProvider = context.read<ContactsProvider>();
 
     final newContact = EmergencyContact(
-      id: DateTime.now().millisecondsSinceEpoch.toString(), // Generate a unique ID
+      id: DateTime.now()
+          .millisecondsSinceEpoch
+          .toString(), // Generate a unique ID
       name: _nameController.text.trim(),
       phoneNumber: _phoneController.text.trim(),
       email: _emailController.text.trim().isEmpty

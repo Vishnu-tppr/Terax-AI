@@ -211,7 +211,8 @@ class CountdownService {
       ));
 
       if (kDebugMode) {
-        print('Added $seconds seconds to countdown. New total: $_remainingSeconds');
+        print(
+            'Added $seconds seconds to countdown. New total: $_remainingSeconds');
       }
     }
   }

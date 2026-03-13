@@ -139,7 +139,8 @@ class SmsService {
       if (response.statusCode == 200 || response.statusCode == 201) {
         final responseData = response.data;
         return SmsMessage(
-          id: responseData['message_id'] ?? DateTime.now().millisecondsSinceEpoch.toString(),
+          id: responseData['message_id'] ??
+              DateTime.now().millisecondsSinceEpoch.toString(),
           recipients: recipients,
           message: message,
           timestamp: DateTime.now(),
@@ -153,7 +154,7 @@ class SmsService {
       if (kDebugMode) {
         print('SMS sending error: ${e.message}');
       }
-      
+
       String errorMessage = 'SMS sending failed';
       if (e.response?.data != null) {
         errorMessage = e.response!.data['error'] ?? errorMessage;
@@ -195,12 +196,12 @@ class SmsService {
     Map<String, dynamic>? additionalData,
   }) async {
     String message = emergencyMessage;
-    
+
     // Add location information if available
     if (latitude != null && longitude != null) {
       final mapLink = 'https://maps.google.com/?q=$latitude,$longitude';
       message += '\n\nLocation: $mapLink';
-      
+
       if (locationName != null) {
         message += '\nNear: $locationName';
       }
@@ -231,10 +232,10 @@ class SmsService {
     String? locationName,
   }) async {
     final mapLink = 'https://maps.google.com/?q=$latitude,$longitude';
-    
+
     String message = customMessage ?? 'I\'m sharing my location with you:';
     message += '\n\n$mapLink';
-    
+
     if (locationName != null) {
       message += '\nNear: $locationName';
     }
@@ -262,9 +263,10 @@ class SmsService {
     try {
       final recipientsString = recipients.join(',');
       final encodedMessage = Uri.encodeComponent(message);
-      
-      final Uri smsUri = Uri.parse('sms:$recipientsString?body=$encodedMessage');
-      
+
+      final Uri smsUri =
+          Uri.parse('sms:$recipientsString?body=$encodedMessage');
+
       if (await canLaunchUrl(smsUri)) {
         await launchUrl(smsUri);
         return true;
@@ -290,7 +292,7 @@ class SmsService {
 
     try {
       final response = await _dio.get('/v1/emergency/sms-status/$messageId');
-      
+
       if (response.statusCode == 200) {
         final status = response.data['status'];
         return SmsDeliveryStatus.values.firstWhere(
@@ -303,7 +305,7 @@ class SmsService {
         print('Error checking SMS status: $e');
       }
     }
-    
+
     return SmsDeliveryStatus.unknown;
   }
 
@@ -320,7 +322,7 @@ class SmsService {
       final queryParams = <String, dynamic>{
         'limit': limit,
       };
-      
+
       if (since != null) {
         queryParams['since'] = since.toIso8601String();
       }
@@ -329,7 +331,7 @@ class SmsService {
         '/v1/emergency/sms-history',
         queryParameters: queryParams,
       );
-      
+
       if (response.statusCode == 200) {
         final List<dynamic> messages = response.data['messages'];
         return messages.map((json) => SmsMessage.fromJson(json)).toList();
@@ -339,7 +341,7 @@ class SmsService {
         print('Error fetching SMS history: $e');
       }
     }
-    
+
     return [];
   }
 
@@ -347,7 +349,7 @@ class SmsService {
   static bool isValidPhoneNumber(String phoneNumber) {
     // Remove all non-digit characters except +
     final cleaned = phoneNumber.replaceAll(RegExp(r'[^\d+]'), '');
-    
+
     // Check if it's a valid international format
     final RegExp phoneRegex = RegExp(r'^\+?[1-9]\d{1,14}$');
     return phoneRegex.hasMatch(cleaned);
@@ -356,7 +358,7 @@ class SmsService {
   /// Format phone number for display
   static String formatPhoneNumber(String phoneNumber) {
     final cleaned = phoneNumber.replaceAll(RegExp(r'[^\d+]'), '');
-    
+
     if (cleaned.startsWith('+1') && cleaned.length == 12) {
       // US format: +1 (XXX) XXX-XXXX
       return '+1 (${cleaned.substring(2, 5)}) ${cleaned.substring(5, 8)}-${cleaned.substring(8)}';
@@ -367,14 +369,14 @@ class SmsService {
       // US format without country code: (XXX) XXX-XXXX
       return '(${cleaned.substring(0, 3)}) ${cleaned.substring(3, 6)}-${cleaned.substring(6)}';
     }
-    
+
     return phoneNumber; // Return original if can't format
   }
 
   /// Get service status
   bool get isInitialized => _baseUrl != null && _apiKey != null;
-  
+
   SmsProvider get provider => _provider;
-  
+
   String? get baseUrl => _baseUrl;
 }

@@ -588,10 +588,9 @@ class _AIAnalysisScreenState extends State<AIAnalysisScreen> {
                       decoration: const InputDecoration(
                         hintText:
                             'Example: "Help me, someone is following me" or "I feel unsafe walking home"',
-          
                         border: OutlineInputBorder(),
                         filled: true,
-                        fillColor: Colors.white, 
+                        fillColor: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 16),

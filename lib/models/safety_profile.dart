@@ -179,8 +179,7 @@ class SafetyProfile {
           enableBiometricTrigger ?? this.enableBiometricTrigger,
       primaryBiometric: primaryBiometric ?? this.primaryBiometric,
       secondaryBiometric: secondaryBiometric ?? this.secondaryBiometric,
-      requireBiometricForDeactivation:
-          requireBiometricForDeactivation ??
+      requireBiometricForDeactivation: requireBiometricForDeactivation ??
           this.requireBiometricForDeactivation,
       trackLocation: trackLocation ?? this.trackLocation,
       locationUpdateInterval:

@@ -68,7 +68,8 @@ void main() {
       test('should setup PIN successfully with valid input', () async {
         // Arrange
         const pin = '1234';
-        when(mockSecureStorage.write(key: anyNamed('key'), value: anyNamed('value')))
+        when(mockSecureStorage.write(
+                key: anyNamed('key'), value: anyNamed('value')))
             .thenAnswer((_) async {});
 
         // Act
@@ -98,7 +99,8 @@ void main() {
         // Assert
         expect(shortResult, false);
         expect(longResult, false);
-        verifyNever(mockSecureStorage.write(key: anyNamed('key'), value: anyNamed('value')));
+        verifyNever(mockSecureStorage.write(
+            key: anyNamed('key'), value: anyNamed('value')));
       });
 
       test('should verify correct PIN', () async {
@@ -111,7 +113,8 @@ void main() {
             .thenAnswer((_) async => hashedPin);
         when(mockSecureStorage.read(key: 'biometric_pin_salt'))
             .thenAnswer((_) async => salt);
-        when(mockSecureStorage.write(key: anyNamed('key'), value: anyNamed('value')))
+        when(mockSecureStorage.write(
+                key: anyNamed('key'), value: anyNamed('value')))
             .thenAnswer((_) async {});
 
         // First setup the PIN
@@ -137,7 +140,8 @@ void main() {
             .thenAnswer((_) async => 'correct_hash');
         when(mockSecureStorage.read(key: 'biometric_pin_salt'))
             .thenAnswer((_) async => salt);
-        when(mockSecureStorage.write(key: anyNamed('key'), value: anyNamed('value')))
+        when(mockSecureStorage.write(
+                key: anyNamed('key'), value: anyNamed('value')))
             .thenAnswer((_) async {});
 
         // Act
@@ -176,7 +180,8 @@ void main() {
     group('Biometric Settings', () {
       test('should enable biometric authentication', () async {
         // Arrange
-        when(mockSecureStorage.write(key: anyNamed('key'), value: anyNamed('value')))
+        when(mockSecureStorage.write(
+                key: anyNamed('key'), value: anyNamed('value')))
             .thenAnswer((_) async {});
 
         // Act
@@ -191,7 +196,8 @@ void main() {
 
       test('should disable biometric authentication', () async {
         // Arrange
-        when(mockSecureStorage.write(key: anyNamed('key'), value: anyNamed('value')))
+        when(mockSecureStorage.write(
+                key: anyNamed('key'), value: anyNamed('value')))
             .thenAnswer((_) async {});
 
         // Act
@@ -258,7 +264,8 @@ void main() {
           'Authentication failed',
         );
         expect(
-          BiometricAuthService.getResultMessage(BiometricAuthResult.notAvailable),
+          BiometricAuthService.getResultMessage(
+              BiometricAuthResult.notAvailable),
           'Biometric authentication not available',
         );
         expect(
@@ -266,7 +273,8 @@ void main() {
           'Authentication cancelled',
         );
         expect(
-          BiometricAuthService.getResultMessage(BiometricAuthResult.pinIncorrect),
+          BiometricAuthService.getResultMessage(
+              BiometricAuthResult.pinIncorrect),
           'Incorrect PIN',
         );
       });
@@ -289,7 +297,8 @@ void main() {
             .thenThrow(Exception('Biometric error'));
 
         // Act & Assert
-        expect(() async => await service.isBiometricAvailable(), returnsNormally);
+        expect(
+            () async => await service.isBiometricAvailable(), returnsNormally);
       });
     });
   });

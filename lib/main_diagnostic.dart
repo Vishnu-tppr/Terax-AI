@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,12 +5,12 @@ import 'package:local_auth/local_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   try {
     if (kDebugMode) {
       print('=== DIAGNOSTIC APP STARTING ===');
     }
-    
+
     runApp(const DiagnosticApp());
   } catch (e, stackTrace) {
     if (kDebugMode) {
@@ -133,7 +132,7 @@ class _DiagnosticScreenState extends State<DiagnosticScreen> {
     try {
       // Test if pubspec.yaml assets are accessible
       final assetBundle = DefaultAssetBundle.of(context);
-      
+
       // Try to load a common asset that should exist
       try {
         await assetBundle.loadString('pubspec.yaml');
@@ -157,11 +156,11 @@ class _DiagnosticScreenState extends State<DiagnosticScreen> {
   Future<void> _testBiometricAvailability() async {
     try {
       final auth = LocalAuthentication();
-      
+
       final isAvailable = await auth.canCheckBiometrics;
       final isDeviceSupported = await auth.isDeviceSupported();
       final availableBiometrics = await auth.getAvailableBiometrics();
-      
+
       _addLog('  - Can check biometrics: $isAvailable');
       _addLog('  - Device supported: $isDeviceSupported');
       _addLog('  - Available biometrics: $availableBiometrics');
@@ -174,7 +173,7 @@ class _DiagnosticScreenState extends State<DiagnosticScreen> {
     try {
       // Test provider package - just check if we can reference the classes
       _addLog('  - Provider package loaded successfully');
-      
+
       // Test go_router - just check if we can reference the classes
       _addLog('  - GoRouter package loaded successfully');
     } catch (e) {
@@ -195,8 +194,7 @@ class _DiagnosticScreenState extends State<DiagnosticScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (_isRunningTests)
-              const LinearProgressIndicator(),
+            if (_isRunningTests) const LinearProgressIndicator(),
             const SizedBox(height: 16),
             Text(
               'Diagnostic Results:',
@@ -216,7 +214,7 @@ class _DiagnosticScreenState extends State<DiagnosticScreen> {
                     final log = _logs[index];
                     final isError = log.contains('✗');
                     final isSuccess = log.contains('✓');
-                    
+
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 2),
                       child: Text(
@@ -239,7 +237,8 @@ class _DiagnosticScreenState extends State<DiagnosticScreen> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _isRunningTests ? null : _runDiagnostics,
-              child: Text(_isRunningTests ? 'Running Tests...' : 'Run Tests Again'),
+              child: Text(
+                  _isRunningTests ? 'Running Tests...' : 'Run Tests Again'),
             ),
           ],
         ),
@@ -247,4 +246,3 @@ class _DiagnosticScreenState extends State<DiagnosticScreen> {
     );
   }
 }
-

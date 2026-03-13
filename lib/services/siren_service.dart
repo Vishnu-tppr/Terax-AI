@@ -19,11 +19,11 @@ class SirenService {
   Timer? _vibrationTimer;
   bool _isSirenActive = false;
   bool _isInitialized = false;
-  
+
   // Siren patterns
   SirenPattern _currentPattern = SirenPattern.emergency;
   double _volume = 1.0;
-  
+
   // Stream controller for siren events
   final StreamController<SirenEvent> _sirenController =
       StreamController<SirenEvent>.broadcast();
@@ -37,7 +37,7 @@ class SirenService {
     try {
       _audioPlayer = AudioPlayer();
       _isInitialized = true;
-      
+
       if (kDebugMode) {
         print('Siren service initialized');
       }
@@ -75,7 +75,7 @@ class SirenService {
 
       // Start audio siren
       await _startAudioSiren();
-      
+
       // Start vibration pattern if enabled
       if (withVibration) {
         await _startVibrationPattern();
@@ -134,7 +134,8 @@ class SirenService {
   /// Play emergency siren pattern
   Future<void> _playEmergencySiren() async {
     // Create a repeating high-pitched emergency sound
-    _sirenTimer = Timer.periodic(const Duration(milliseconds: 100), (timer) async {
+    _sirenTimer =
+        Timer.periodic(const Duration(milliseconds: 100), (timer) async {
       if (!_isSirenActive) {
         timer.cancel();
         return;
@@ -142,7 +143,8 @@ class SirenService {
 
       try {
         // Generate high-pitched beep sound
-        await _playTone(frequency: 1000 + (timer.tick % 10) * 100, duration: 100);
+        await _playTone(
+            frequency: 1000 + (timer.tick % 10) * 100, duration: 100);
       } catch (e) {
         if (kDebugMode) {
           print('Error in emergency siren: $e');
@@ -154,7 +156,8 @@ class SirenService {
   /// Play police siren pattern
   Future<void> _playPoliceSiren() async {
     // Alternating high-low pattern
-    _sirenTimer = Timer.periodic(const Duration(milliseconds: 500), (timer) async {
+    _sirenTimer =
+        Timer.periodic(const Duration(milliseconds: 500), (timer) async {
       if (!_isSirenActive) {
         timer.cancel();
         return;
@@ -174,7 +177,8 @@ class SirenService {
   /// Play ambulance siren pattern
   Future<void> _playAmbulanceSiren() async {
     // Rising and falling pattern
-    _sirenTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) async {
+    _sirenTimer =
+        Timer.periodic(const Duration(milliseconds: 50), (timer) async {
       if (!_isSirenActive) {
         timer.cancel();
         return;
@@ -195,7 +199,8 @@ class SirenService {
   /// Play fire siren pattern
   Future<void> _playFireSiren() async {
     // Continuous high-pitched sound
-    _sirenTimer = Timer.periodic(const Duration(milliseconds: 200), (timer) async {
+    _sirenTimer =
+        Timer.periodic(const Duration(milliseconds: 200), (timer) async {
       if (!_isSirenActive) {
         timer.cancel();
         return;
@@ -214,7 +219,8 @@ class SirenService {
   /// Play alarm siren pattern
   Future<void> _playAlarmSiren() async {
     // Rapid beeping pattern
-    _sirenTimer = Timer.periodic(const Duration(milliseconds: 300), (timer) async {
+    _sirenTimer =
+        Timer.periodic(const Duration(milliseconds: 300), (timer) async {
       if (!_isSirenActive) {
         timer.cancel();
         return;
@@ -232,7 +238,8 @@ class SirenService {
   }
 
   /// Play a tone with specified frequency and duration
-  Future<void> _playTone({required int frequency, required int duration}) async {
+  Future<void> _playTone(
+      {required int frequency, required int duration}) async {
     try {
       // Use system sound for now (can be replaced with generated audio)
       await SystemSound.play(SystemSoundType.alert);
@@ -274,7 +281,8 @@ class SirenService {
 
   /// Emergency vibration pattern
   void _startEmergencyVibration() {
-    _vibrationTimer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
+    _vibrationTimer =
+        Timer.periodic(const Duration(milliseconds: 200), (timer) {
       if (!_isSirenActive) {
         timer.cancel();
         return;
@@ -297,7 +305,8 @@ class SirenService {
 
   /// Ambulance vibration pattern
   void _startAmbulanceVibration() {
-    _vibrationTimer = Timer.periodic(const Duration(milliseconds: 800), (timer) {
+    _vibrationTimer =
+        Timer.periodic(const Duration(milliseconds: 800), (timer) {
       if (!_isSirenActive) {
         timer.cancel();
         return;
@@ -308,7 +317,8 @@ class SirenService {
 
   /// Fire vibration pattern
   void _startFireVibration() {
-    _vibrationTimer = Timer.periodic(const Duration(milliseconds: 300), (timer) {
+    _vibrationTimer =
+        Timer.periodic(const Duration(milliseconds: 300), (timer) {
       if (!_isSirenActive) {
         timer.cancel();
         return;
@@ -319,7 +329,8 @@ class SirenService {
 
   /// Alarm vibration pattern
   void _startAlarmVibration() {
-    _vibrationTimer = Timer.periodic(const Duration(milliseconds: 600), (timer) {
+    _vibrationTimer =
+        Timer.periodic(const Duration(milliseconds: 600), (timer) {
       if (!_isSirenActive) {
         timer.cancel();
         return;
@@ -335,14 +346,14 @@ class SirenService {
 
     try {
       _isSirenActive = false;
-      
+
       // Stop timers
       _sirenTimer?.cancel();
       _vibrationTimer?.cancel();
-      
+
       // Stop audio
       await _audioPlayer?.stop();
-      
+
       // Stop vibration
       await Vibration.cancel();
 

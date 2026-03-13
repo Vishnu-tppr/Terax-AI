@@ -113,8 +113,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 controller: _emergencyInfoController,
                 decoration: const InputDecoration(
                   labelText: 'Emergency Information',
-                  hintText:
-                      'Medical conditions, allergies, etc.',
+                  hintText: 'Medical conditions, allergies, etc.',
                 ),
                 maxLines: 3,
               ),

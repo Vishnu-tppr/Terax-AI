@@ -15,16 +15,23 @@ class AdvancedThreatDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final situationAssessment = analysisResult['situation_assessment'] as Map<String, dynamic>?;
-    final voiceAnalysis = analysisResult['voice_analysis'] as Map<String, dynamic>?;
-    final recommendation = analysisResult['recommendation'] as Map<String, dynamic>?;
-    final preventiveAlert = analysisResult['preventive_alert'] as Map<String, dynamic>?;
-    final advancedAnalytics = analysisResult['advanced_analytics'] as Map<String, dynamic>?;
-    
-    final threatLevel = situationAssessment?['threat_level'] as String? ?? 'LOW';
+    final situationAssessment =
+        analysisResult['situation_assessment'] as Map<String, dynamic>?;
+    final voiceAnalysis =
+        analysisResult['voice_analysis'] as Map<String, dynamic>?;
+    final recommendation =
+        analysisResult['recommendation'] as Map<String, dynamic>?;
+    final preventiveAlert =
+        analysisResult['preventive_alert'] as Map<String, dynamic>?;
+    final advancedAnalytics =
+        analysisResult['advanced_analytics'] as Map<String, dynamic>?;
+
+    final threatLevel =
+        situationAssessment?['threat_level'] as String? ?? 'LOW';
     final threatType = situationAssessment?['threat_type'] as String? ?? 'none';
-    final confidence = (analysisResult['confidence_overall_percent'] as num?)?.toInt() ?? 0;
-    
+    final confidence =
+        (analysisResult['confidence_overall_percent'] as num?)?.toInt() ?? 0;
+
     return Card(
       elevation: 8,
       margin: const EdgeInsets.all(16),
@@ -94,7 +101,8 @@ class AdvancedThreatDisplay extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 4, 4, 4).withValues(alpha: (0.2 * 255).toDouble()),
+            color: const Color.fromARGB(255, 4, 4, 4)
+                .withValues(alpha: (0.2 * 255).toDouble()),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
@@ -112,16 +120,21 @@ class AdvancedThreatDisplay extends StatelessWidget {
 
   Widget _buildThreatAnalysis(Map<String, dynamic>? situationAssessment) {
     if (situationAssessment == null) return const SizedBox.shrink();
-    
-    final escalationProbability = (situationAssessment['escalation_probability'] as num?)?.toDouble();
-    final timeToIntervention = situationAssessment['time_to_intervention_minutes'] as int?;
-    final behavioralAnomalies = situationAssessment['behavioral_anomalies'] as Map<String, dynamic>?;
-    final geospatialRisk = situationAssessment['geospatial_risk'] as Map<String, dynamic>?;
-    
+
+    final escalationProbability =
+        (situationAssessment['escalation_probability'] as num?)?.toDouble();
+    final timeToIntervention =
+        situationAssessment['time_to_intervention_minutes'] as int?;
+    final behavioralAnomalies =
+        situationAssessment['behavioral_anomalies'] as Map<String, dynamic>?;
+    final geospatialRisk =
+        situationAssessment['geospatial_risk'] as Map<String, dynamic>?;
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 5, 5, 5).withValues(alpha: (0.1 * 255).toDouble()),
+        color: const Color.fromARGB(255, 5, 5, 5)
+            .withValues(alpha: (0.1 * 255).toDouble()),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -137,19 +150,21 @@ class AdvancedThreatDisplay extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           if (escalationProbability != null)
-            _buildAnalysisRow('Escalation Risk', '${(escalationProbability * 100).toInt()}%'),
+            _buildAnalysisRow(
+                'Escalation Risk', '${(escalationProbability * 100).toInt()}%'),
           if (timeToIntervention != null)
-            _buildAnalysisRow('Intervention Window', '$timeToIntervention minutes'),
+            _buildAnalysisRow(
+                'Intervention Window', '$timeToIntervention minutes'),
           if (behavioralAnomalies != null) ...[
-            _buildAnalysisRow('Location Deviation', 
+            _buildAnalysisRow('Location Deviation',
                 '${((behavioralAnomalies['location_deviation'] as num? ?? 0) * 100).toInt()}%'),
-            _buildAnalysisRow('Timing Unusual', 
+            _buildAnalysisRow('Timing Unusual',
                 behavioralAnomalies['timing_unusual'] == true ? 'Yes' : 'No'),
           ],
           if (geospatialRisk != null) ...[
-            _buildAnalysisRow('Area Risk Level', 
+            _buildAnalysisRow('Area Risk Level',
                 '${((geospatialRisk['crime_index'] as num? ?? 0) * 100).toInt()}%'),
-            _buildAnalysisRow('Safe Zone Distance', 
+            _buildAnalysisRow('Safe Zone Distance',
                 '${geospatialRisk['safe_zone_distance_km'] ?? 'Unknown'} km'),
           ],
         ],
@@ -159,15 +174,17 @@ class AdvancedThreatDisplay extends StatelessWidget {
 
   Widget _buildVoiceAnalysis(Map<String, dynamic>? voiceAnalysis) {
     if (voiceAnalysis == null) return const SizedBox.shrink();
-    
+
     final distressPercent = voiceAnalysis['distress_percent'] as int?;
     final primaryEmotion = voiceAnalysis['primary_emotion'] as String?;
-    final threatIndicators = voiceAnalysis['threat_indicators'] as Map<String, dynamic>?;
-    
+    final threatIndicators =
+        voiceAnalysis['threat_indicators'] as Map<String, dynamic>?;
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 7, 7, 7).withValues(alpha: (0.1 * 255).toDouble()),
+        color: const Color.fromARGB(255, 7, 7, 7)
+            .withValues(alpha: (0.1 * 255).toDouble()),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -185,7 +202,8 @@ class AdvancedThreatDisplay extends StatelessWidget {
           if (distressPercent != null)
             _buildAnalysisRow('Distress Level', '$distressPercent%'),
           if (primaryEmotion != null)
-            _buildAnalysisRow('Primary Emotion', _formatEmotion(primaryEmotion)),
+            _buildAnalysisRow(
+                'Primary Emotion', _formatEmotion(primaryEmotion)),
           if (threatIndicators != null) ...[
             if (threatIndicators['coercion_detected'] == true)
               _buildAnalysisRow('Coercion Detected', '⚠️ Yes'),
@@ -201,16 +219,18 @@ class AdvancedThreatDisplay extends StatelessWidget {
 
   Widget _buildRecommendations(Map<String, dynamic>? recommendation) {
     if (recommendation == null) return const SizedBox.shrink();
-    
+
     final action = recommendation['action'] as String?;
     final priorityLevel = recommendation['priority_level'] as String?;
     final responseTime = recommendation['response_time_required'] as String?;
-    final specializedResponse = recommendation['specialized_response'] as Map<String, dynamic>?;
-    
+    final specializedResponse =
+        recommendation['specialized_response'] as Map<String, dynamic>?;
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 5, 5, 5).withValues(alpha: (0.1 * 255).toDouble()),
+        color: const Color.fromARGB(255, 5, 5, 5)
+            .withValues(alpha: (0.1 * 255).toDouble()),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -232,9 +252,9 @@ class AdvancedThreatDisplay extends StatelessWidget {
           if (responseTime != null)
             _buildAnalysisRow('Response Time', responseTime),
           if (specializedResponse != null) ...[
-            ...specializedResponse.entries
-                .where((e) => e.value == true)
-                .map((e) => _buildAnalysisRow('Specialized Response', _formatSpecializedResponse(e.key))),
+            ...specializedResponse.entries.where((e) => e.value == true).map(
+                (e) => _buildAnalysisRow(
+                    'Specialized Response', _formatSpecializedResponse(e.key))),
           ],
         ],
       ),
@@ -243,15 +263,16 @@ class AdvancedThreatDisplay extends StatelessWidget {
 
   Widget _buildSafetyInformation(Map<String, dynamic>? preventiveAlert) {
     if (preventiveAlert == null) return const SizedBox.shrink();
-    
+
     final safetyActions = preventiveAlert['safety_actions'] as List<dynamic>?;
     final escapeRoutes = preventiveAlert['escape_routes'] as List<dynamic>?;
     final nearbyHelp = preventiveAlert['nearby_help'] as Map<String, dynamic>?;
-    
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 3, 3, 3).withValues(alpha: (0.1 * 255).toDouble()),
+        color: const Color.fromARGB(255, 3, 3, 3)
+            .withValues(alpha: (0.1 * 255).toDouble()),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -267,13 +288,16 @@ class AdvancedThreatDisplay extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           if (safetyActions != null && safetyActions.isNotEmpty) ...[
-            _buildAnalysisRow('Safety Actions', safetyActions.cast<String>().join(', ')),
+            _buildAnalysisRow(
+                'Safety Actions', safetyActions.cast<String>().join(', ')),
           ],
           if (escapeRoutes != null && escapeRoutes.isNotEmpty) ...[
-            _buildAnalysisRow('Escape Routes', escapeRoutes.cast<String>().join(', ')),
+            _buildAnalysisRow(
+                'Escape Routes', escapeRoutes.cast<String>().join(', ')),
           ],
           if (nearbyHelp != null && nearbyHelp.isNotEmpty) ...[
-            ...nearbyHelp.entries.map((e) => _buildAnalysisRow(e.key, e.value.toString())),
+            ...nearbyHelp.entries
+                .map((e) => _buildAnalysisRow(e.key, e.value.toString())),
           ],
         ],
       ),
@@ -281,9 +305,11 @@ class AdvancedThreatDisplay extends StatelessWidget {
   }
 
   Widget _buildAdvancedAnalytics(Map<String, dynamic> advancedAnalytics) {
-    final patternRecognition = advancedAnalytics['pattern_recognition'] as Map<String, dynamic>?;
-    final predictiveModeling = advancedAnalytics['predictive_modeling'] as Map<String, dynamic>?;
-    
+    final patternRecognition =
+        advancedAnalytics['pattern_recognition'] as Map<String, dynamic>?;
+    final predictiveModeling =
+        advancedAnalytics['predictive_modeling'] as Map<String, dynamic>?;
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -304,15 +330,19 @@ class AdvancedThreatDisplay extends StatelessWidget {
           const SizedBox(height: 8),
           if (patternRecognition != null) ...[
             if ((patternRecognition['stalking_score'] as num? ?? 0) > 0.5)
-              _buildAnalysisRow('Stalking Pattern', '${((patternRecognition['stalking_score'] as num) * 100).toInt()}%'),
+              _buildAnalysisRow('Stalking Pattern',
+                  '${((patternRecognition['stalking_score'] as num) * 100).toInt()}%'),
             if ((patternRecognition['routine_deviation'] as num? ?? 0) > 0.5)
-              _buildAnalysisRow('Routine Deviation', '${((patternRecognition['routine_deviation'] as num) * 100).toInt()}%'),
+              _buildAnalysisRow('Routine Deviation',
+                  '${((patternRecognition['routine_deviation'] as num) * 100).toInt()}%'),
           ],
           if (predictiveModeling != null) ...[
             if (predictiveModeling['escalation_timeline'] != null)
-              _buildAnalysisRow('Escalation Timeline', predictiveModeling['escalation_timeline'].toString()),
+              _buildAnalysisRow('Escalation Timeline',
+                  predictiveModeling['escalation_timeline'].toString()),
             if (predictiveModeling['intervention_window'] != null)
-              _buildAnalysisRow('Intervention Window', predictiveModeling['intervention_window'].toString()),
+              _buildAnalysisRow('Intervention Window',
+                  predictiveModeling['intervention_window'].toString()),
           ],
         ],
       ),
@@ -362,7 +392,8 @@ class AdvancedThreatDisplay extends StatelessWidget {
             icon: const Icon(Icons.send, color: Colors.white),
             label: const Text(
               'Send Alert',
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red.shade600,
@@ -452,8 +483,12 @@ class AdvancedThreatDisplay extends StatelessWidget {
   }
 
   String _formatThreatType(String threatType) {
-    return threatType.replaceAll('_', ' ').split(' ').map((word) => 
-        word.isEmpty ? word : word[0].toUpperCase() + word.substring(1)).join(' ');
+    return threatType
+        .replaceAll('_', ' ')
+        .split(' ')
+        .map((word) =>
+            word.isEmpty ? word : word[0].toUpperCase() + word.substring(1))
+        .join(' ');
   }
 
   String _formatEmotion(String emotion) {

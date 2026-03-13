@@ -3,11 +3,13 @@ import 'dart:math';
 
 class AdvancedThreatDetectionService {
   static AdvancedThreatDetectionService? _instance;
-  static AdvancedThreatDetectionService get instance => _instance ??= AdvancedThreatDetectionService._();
+  static AdvancedThreatDetectionService get instance =>
+      _instance ??= AdvancedThreatDetectionService._();
 
   AdvancedThreatDetectionService._();
 
-  bool isFallDetected(List<double> accelerometerData, List<double> gyroscopeData) {
+  bool isFallDetected(
+      List<double> accelerometerData, List<double> gyroscopeData) {
     // Implement simplified fall detection logic using accelerometer data.
     if (accelerometerData.length != 3) {
       return false; // Invalid data

@@ -230,7 +230,8 @@ class RealCallService {
   Future<void> placeCalls(List<EmergencyContact> contacts,
       {int maxPriority = 2}) async {
     final callContacts = contacts
-        .where((c) => c.phoneNumber.isNotEmpty && c.priorityNumber <= maxPriority)
+        .where(
+            (c) => c.phoneNumber.isNotEmpty && c.priorityNumber <= maxPriority)
         .toList();
     callContacts.sort((a, b) => a.priority.compareTo(b.priority));
     for (final _ in callContacts) {

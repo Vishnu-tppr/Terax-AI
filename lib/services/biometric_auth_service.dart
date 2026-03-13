@@ -11,7 +11,8 @@ import 'package:local_auth_darwin/local_auth_darwin.dart';
 class BiometricAuthService {
   static BiometricAuthService? _instance;
   static BiometricAuthService get instance {
-    _instance ??= BiometricAuthService._(LocalAuthentication(), const FlutterSecureStorage());
+    _instance ??= BiometricAuthService._(
+        LocalAuthentication(), const FlutterSecureStorage());
     return _instance!;
   }
 
@@ -565,32 +566,32 @@ class BiometricAuthResult {
 
   // Static constants for common results
   static BiometricAuthResult get success => BiometricAuthResult(
-    isAuthenticated: true,
-  );
+        isAuthenticated: true,
+      );
 
   static BiometricAuthResult get failed => BiometricAuthResult(
-    isAuthenticated: false,
-    error: 'Biometric authentication failed',
-    errorType: BiometricErrorType.failed,
-  );
+        isAuthenticated: false,
+        error: 'Biometric authentication failed',
+        errorType: BiometricErrorType.failed,
+      );
 
   static BiometricAuthResult get notAvailable => BiometricAuthResult(
-    isAuthenticated: false,
-    error: 'Biometric authentication not available',
-    errorType: BiometricErrorType.notAvailable,
-  );
+        isAuthenticated: false,
+        error: 'Biometric authentication not available',
+        errorType: BiometricErrorType.notAvailable,
+      );
 
   static BiometricAuthResult get cancelled => BiometricAuthResult(
-    isAuthenticated: false,
-    error: 'Authentication cancelled',
-    errorType: BiometricErrorType.userCancel,
-  );
+        isAuthenticated: false,
+        error: 'Authentication cancelled',
+        errorType: BiometricErrorType.userCancel,
+      );
 
   static BiometricAuthResult get pinIncorrect => BiometricAuthResult(
-    isAuthenticated: false,
-    error: 'Incorrect PIN',
-    errorType: BiometricErrorType.pinIncorrect,
-  );
+        isAuthenticated: false,
+        error: 'Incorrect PIN',
+        errorType: BiometricErrorType.pinIncorrect,
+      );
 }
 
 enum BiometricAuthType {

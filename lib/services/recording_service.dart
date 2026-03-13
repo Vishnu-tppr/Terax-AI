@@ -102,7 +102,7 @@ class RecordingService {
 
       // Start video recording
       final videoStarted = await _startVideoRecording(silent: silent);
-      
+
       // Start audio recording
       final audioStarted = await _startAudioRecording(silent: silent);
 
@@ -116,7 +116,8 @@ class RecordingService {
         ));
 
         if (kDebugMode) {
-          print('Emergency recording started - Video: $videoStarted, Audio: $audioStarted');
+          print(
+              'Emergency recording started - Video: $videoStarted, Audio: $audioStarted');
         }
         return true;
       } else {
@@ -267,7 +268,8 @@ class RecordingService {
       ));
 
       if (kDebugMode) {
-        print('Emergency recording stopped - Video: $finalVideoPath, Audio: $finalAudioPath');
+        print(
+            'Emergency recording stopped - Video: $finalVideoPath, Audio: $finalAudioPath');
       }
 
       return result;
@@ -301,7 +303,8 @@ class RecordingService {
 
       // Get video files
       if (await videoDir.exists()) {
-        final videoFiles = videoDir.listSync()
+        final videoFiles = videoDir
+            .listSync()
             .where((file) => file.path.endsWith('.mp4'))
             .cast<File>();
 
@@ -319,7 +322,8 @@ class RecordingService {
 
       // Get audio files
       if (await audioDir.exists()) {
-        final audioFiles = audioDir.listSync()
+        final audioFiles = audioDir
+            .listSync()
             .where((file) => file.path.endsWith('.aac'))
             .cast<File>();
 
@@ -427,7 +431,7 @@ class RecordingResult {
 
   bool get hasVideo => videoPath != null;
   bool get hasAudio => audioPath != null;
-  
+
   String get displayName {
     final timestamp = startTime.toString().substring(0, 19);
     if (hasVideo && hasAudio) {

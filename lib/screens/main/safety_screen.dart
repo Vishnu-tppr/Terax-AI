@@ -94,7 +94,6 @@ class _SafetyScreenState extends State<SafetyScreen>
   }
 
   void _activateEmergency() async {
-
     final safetyProvider = context.read<SafetyProvider>();
     final contactsProvider = context.read<ContactsProvider>();
     final locationProvider = context.read<LocationProvider>();
@@ -109,7 +108,8 @@ class _SafetyScreenState extends State<SafetyScreen>
     final incident = EmergencyIncident(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       timestamp: DateTime.now(), // Added timestamp
-      triggerType: _currentTriggerType ?? TriggerType.button, // Use tracked trigger type
+      triggerType:
+          _currentTriggerType ?? TriggerType.button, // Use tracked trigger type
       status: IncidentStatus.active,
       description: 'Emergency alert triggered from Terax AI Safety App',
       triggeredAt: DateTime.now(),
@@ -124,7 +124,8 @@ class _SafetyScreenState extends State<SafetyScreen>
     // Trigger emergency service
     try {
       await EmergencyService.instance.triggerEmergency(
-        triggerType: _currentTriggerType ?? TriggerType.button, // Use tracked trigger type
+        triggerType: _currentTriggerType ??
+            TriggerType.button, // Use tracked trigger type
         settings: settingsProvider.settings,
         contacts: contactsProvider.contacts,
         location: locationProvider.currentAddress,
@@ -267,7 +268,8 @@ class _SafetyScreenState extends State<SafetyScreen>
                           child: GestureDetector(
                             onLongPress: () {
                               if (!safetyProvider.isEmergencyActive) {
-                                _currentTriggerType = TriggerType.button; // Set trigger type for button
+                                _currentTriggerType = TriggerType
+                                    .button; // Set trigger type for button
                                 _startEmergencyCountdown();
                               }
                             },

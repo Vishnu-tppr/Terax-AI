@@ -17,7 +17,8 @@ class ApiConfig {
       // If no API key is found, try to load from environment
       if (_cachedApiKey == null) {
         const defaultKey = String.fromEnvironment('GEMINI_API_KEY');
-        if (defaultKey.isNotEmpty) { // Only set if not empty
+        if (defaultKey.isNotEmpty) {
+          // Only set if not empty
           await setGeminiApiKey(defaultKey);
         }
       }
@@ -172,8 +173,10 @@ class ApiKeyManager {
       }
 
       // Make actual API call to validate with timeout
-      final validationUrl = Uri.parse('${EnvironmentConfig.geminiApiBaseUrl}/models?key=$keyToValidate');
-      final response = await http.get(validationUrl).timeout(EnvironmentConfig.apiTimeout);
+      final validationUrl = Uri.parse(
+          '${EnvironmentConfig.geminiApiBaseUrl}/models?key=$keyToValidate');
+      final response =
+          await http.get(validationUrl).timeout(EnvironmentConfig.apiTimeout);
 
       if (response.statusCode == 200) {
         _currentStatus = ApiKeyStatus.valid;
@@ -194,14 +197,16 @@ class ApiKeyManager {
         print('API key validation timeout: $e');
         print('NOTE: Treating as network issue - validation deferred');
       }
-      _currentStatus = ApiKeyStatus.notSet; // Default to not set to avoid blocking
+      _currentStatus =
+          ApiKeyStatus.notSet; // Default to not set to avoid blocking
       return _currentStatus;
     } catch (e) {
       if (kDebugMode) {
         print('API key validation error: $e');
         print('NOTE: Treating as network issue - validation deferred');
       }
-      _currentStatus = ApiKeyStatus.notSet; // Default to not set to avoid blocking
+      _currentStatus =
+          ApiKeyStatus.notSet; // Default to not set to avoid blocking
       return _currentStatus;
     }
   }

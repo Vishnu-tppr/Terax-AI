@@ -51,20 +51,24 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> _checkAuthStatus() async {
-    print('🔍 EMERGENCY FIX [SplashScreen] _checkAuthStatus started - Testing Immediate Navigation');
+    print(
+        '🔍 EMERGENCY FIX [SplashScreen] _checkAuthStatus started - Testing Immediate Navigation');
 
     // EMERGENCY FIX: Try immediate navigation first to test if navigation works
     if (mounted) {
-      print('🔍 EMERGENCY FIX [SplashScreen] Attempting immediate navigation to /main');
+      print(
+          '🔍 EMERGENCY FIX [SplashScreen] Attempting immediate navigation to /main');
       try {
         await Future.delayed(const Duration(milliseconds: 100));
         if (mounted) {
           context.go('/main');
-          print('🔍 EMERGENCY FIX [SplashScreen] Immediate navigation succeeded');
+          print(
+              '🔍 EMERGENCY FIX [SplashScreen] Immediate navigation succeeded');
           return; // Exit after successful immediate navigation
         }
       } catch (e) {
-        print('🔍 EMERGENCY FIX [SplashScreen] Immediate navigation failed: $e - trying original logic');
+        print(
+            '🔍 EMERGENCY FIX [SplashScreen] Immediate navigation failed: $e - trying original logic');
       }
     }
 

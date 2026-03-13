@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -51,14 +50,14 @@ class SafetyProvider extends ChangeNotifier {
   Future<void> _loadSettings() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      
+
       _isSilentMode = prefs.getBool(_silentModeKey) ?? false;
       _isAutoTriggerEnabled = prefs.getBool(_autoTriggerEnabledKey) ?? true;
-      
+
       // Validate auto-trigger delay with bounds checking
       final savedDelay = prefs.getInt(_autoTriggerDelayKey) ?? 30;
       _autoTriggerDelay = _validateAutoTriggerDelay(savedDelay);
-      
+
       notifyListeners();
     } catch (e) {
       if (kDebugMode) {
@@ -72,22 +71,22 @@ class SafetyProvider extends ChangeNotifier {
   Future<bool> _saveSettings() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      
+
       final results = await Future.wait([
         prefs.setBool(_silentModeKey, _isSilentMode),
         prefs.setBool(_autoTriggerEnabledKey, _isAutoTriggerEnabled),
         prefs.setInt(_autoTriggerDelayKey, _autoTriggerDelay),
       ]);
-      
+
       // Check if all save operations succeeded
       final allSucceeded = results.every((result) => result);
-      
+
       if (allSucceeded) {
         _clearError();
       } else {
         _setError('Some settings failed to save');
       }
-      
+
       return allSucceeded;
     } catch (e) {
       _setError('Failed to save settings: $e');
@@ -102,13 +101,15 @@ class SafetyProvider extends ChangeNotifier {
   int _validateAutoTriggerDelay(int delay) {
     if (delay < minAutoTriggerDelay) {
       if (kDebugMode) {
-        print('Auto-trigger delay too low, setting to minimum: $minAutoTriggerDelay');
+        print(
+            'Auto-trigger delay too low, setting to minimum: $minAutoTriggerDelay');
       }
       return minAutoTriggerDelay;
     }
     if (delay > maxAutoTriggerDelay) {
       if (kDebugMode) {
-        print('Auto-trigger delay too high, setting to maximum: $maxAutoTriggerDelay');
+        print(
+            'Auto-trigger delay too high, setting to maximum: $maxAutoTriggerDelay');
       }
       return maxAutoTriggerDelay;
     }
@@ -140,12 +141,12 @@ class SafetyProvider extends ChangeNotifier {
   // Toggle silent mode with async save
   Future<bool> toggleSilentMode() async {
     if (_isLoading) return false;
-    
+
     _setLoading(true);
     try {
       _isSilentMode = !_isSilentMode;
       notifyListeners();
-      
+
       final success = await _saveSettings();
       if (!success) {
         // Revert on save failure
@@ -167,12 +168,12 @@ class SafetyProvider extends ChangeNotifier {
   // Toggle auto-trigger with async save
   Future<bool> toggleAutoTrigger() async {
     if (_isLoading) return false;
-    
+
     _setLoading(true);
     try {
       _isAutoTriggerEnabled = !_isAutoTriggerEnabled;
       notifyListeners();
-      
+
       final success = await _saveSettings();
       if (!success) {
         // Revert on save failure
@@ -194,19 +195,19 @@ class SafetyProvider extends ChangeNotifier {
   // Set auto-trigger delay with validation and async save
   Future<bool> setAutoTriggerDelay(int delay) async {
     if (_isLoading) return false;
-    
+
     final validatedDelay = _validateAutoTriggerDelay(delay);
-    
+
     if (_autoTriggerDelay == validatedDelay) {
       return true; // No change needed
     }
-    
+
     _setLoading(true);
     try {
       final oldDelay = _autoTriggerDelay;
       _autoTriggerDelay = validatedDelay;
       notifyListeners();
-      
+
       final success = await _saveSettings();
       if (!success) {
         // Revert on save failure
@@ -227,7 +228,7 @@ class SafetyProvider extends ChangeNotifier {
   // Reload settings from storage
   Future<bool> reloadSettings() async {
     if (_isLoading) return false;
-    
+
     _setLoading(true);
     try {
       await _loadSettings();
@@ -244,14 +245,14 @@ class SafetyProvider extends ChangeNotifier {
   // Reset settings to defaults
   Future<bool> resetToDefaults() async {
     if (_isLoading) return false;
-    
+
     _setLoading(true);
     try {
       _isSilentMode = false;
       _isAutoTriggerEnabled = true;
       _autoTriggerDelay = 30;
       notifyListeners();
-      
+
       final success = await _saveSettings();
       if (success) {
         _clearError();
@@ -267,9 +268,9 @@ class SafetyProvider extends ChangeNotifier {
 
   // Get validation constraints for UI
   Map<String, int> get autoTriggerDelayConstraints => {
-    'min': minAutoTriggerDelay,
-    'max': maxAutoTriggerDelay,
-  };
+        'min': minAutoTriggerDelay,
+        'max': maxAutoTriggerDelay,
+      };
 
   void activateEmergency() {
     _isEmergencyActive = true;

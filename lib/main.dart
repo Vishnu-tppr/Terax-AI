@@ -30,19 +30,24 @@ void main() async {
 
     // Initialize API key for immediate use (non-blocking)
     try {
-      await ApiConfig.initializeWithApiKey().timeout(const Duration(seconds: 15));
+      await ApiConfig.initializeWithApiKey()
+          .timeout(const Duration(seconds: 15));
       if (kDebugMode) {
         print('API configuration initialized successfully');
       }
     } on TimeoutException catch (apiError) {
       if (kDebugMode) {
-        print('API initialization timeout, continuing with app startup: $apiError');
-        print('NOTE: Gemini API key validation failed - app will work with limited features.');
+        print(
+            'API initialization timeout, continuing with app startup: $apiError');
+        print(
+            'NOTE: Gemini API key validation failed - app will work with limited features.');
       }
     } catch (apiError) {
       if (kDebugMode) {
-        print('API initialization failed, continuing with app startup: $apiError');
-        print('NOTE: Gemini API key may not be configured. This is OK for basic app functionality.');
+        print(
+            'API initialization failed, continuing with app startup: $apiError');
+        print(
+            'NOTE: Gemini API key may not be configured. This is OK for basic app functionality.');
       }
     }
 
@@ -168,50 +173,46 @@ final _router = GoRouter(
   debugLogDiagnostics: kDebugMode,
   routes: [
     GoRoute(
-      path: '/',
-      builder: (context, state) {
-        if (kDebugMode) {
-          print('🔍 [Router] Building SplashScreen for path: /');
-        }
-        return const SplashScreen();
-      }
-    ),
+        path: '/',
+        builder: (context, state) {
+          if (kDebugMode) {
+            print('🔍 [Router] Building SplashScreen for path: /');
+          }
+          return const SplashScreen();
+        }),
     GoRoute(
-      path: '/biometric',
-      builder: (context, state) {
-        if (kDebugMode) {
-          print('🔍 [Router] Building BiometricAuthScreen for path: /biometric');
-        }
-        return const BiometricAuthScreen();
-      }
-    ),
+        path: '/biometric',
+        builder: (context, state) {
+          if (kDebugMode) {
+            print(
+                '🔍 [Router] Building BiometricAuthScreen for path: /biometric');
+          }
+          return const BiometricAuthScreen();
+        }),
     GoRoute(
-      path: '/signin',
-      builder: (context, state) {
-        if (kDebugMode) {
-          print('🔍 [Router] Building SignInScreen for path: /signin');
-        }
-        return const SignInScreen();
-      }
-    ),
+        path: '/signin',
+        builder: (context, state) {
+          if (kDebugMode) {
+            print('🔍 [Router] Building SignInScreen for path: /signin');
+          }
+          return const SignInScreen();
+        }),
     GoRoute(
-      path: '/signup',
-      builder: (context, state) {
-        if (kDebugMode) {
-          print('🔍 [Router] Building SignUpScreen for path: /signup');
-        }
-        return const SignUpScreen();
-      }
-    ),
+        path: '/signup',
+        builder: (context, state) {
+          if (kDebugMode) {
+            print('🔍 [Router] Building SignUpScreen for path: /signup');
+          }
+          return const SignUpScreen();
+        }),
     GoRoute(
-      path: '/main',
-      builder: (context, state) {
-        if (kDebugMode) {
-          print('🔍 [Router] Building MainScreen for path: /main');
-        }
-        return const MainScreen();
-      }
-    ),
+        path: '/main',
+        builder: (context, state) {
+          if (kDebugMode) {
+            print('🔍 [Router] Building MainScreen for path: /main');
+          }
+          return const MainScreen();
+        }),
   ],
 );
 

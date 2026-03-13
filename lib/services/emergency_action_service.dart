@@ -11,7 +11,6 @@ class EmergencyActionService {
 
   /// Emergency contacts list with priority levels
   final List<EmergencyContact> _emergencyContacts = [];
-  
 
   /// Add emergency contact
   void addEmergencyContact(EmergencyContact contact) {
@@ -50,10 +49,8 @@ class EmergencyActionService {
       }
 
       final action = recommendation['action'] as String?;
-      
-      final alertId = aiResult['alert_id'] as String? ?? 'unknown';
 
-      
+      final alertId = aiResult['alert_id'] as String? ?? 'unknown';
 
       switch (action) {
         case 'auto_send':
@@ -104,8 +101,6 @@ class EmergencyActionService {
       );
     }
 
-    
-
     try {
       final location = await _getCurrentLocation();
       final message =
@@ -130,7 +125,6 @@ class EmergencyActionService {
         contactsNotified: _emergencyContacts.length,
       );
     } catch (e) {
-      
       return EmergencyActionResult(
         success: false,
         message: 'Failed to send emergency alerts: $e',
@@ -301,12 +295,7 @@ class EmergencyActionService {
   }
 
   /// Cancel current emergency
-  void cancelEmergency() {
-    
-    
-  }
-
-  
+  void cancelEmergency() {}
 }
 
 /// Emergency contact model

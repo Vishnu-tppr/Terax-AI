@@ -51,8 +51,7 @@ class _VoicePhrasesScreenState extends State<VoicePhrasesScreen> {
           Expanded(
             child: Consumer<SettingsProvider>(
               builder: (context, settingsProvider, child) {
-                final phrases =
-                    settingsProvider.settings.voiceTriggerPhrases;
+                final phrases = settingsProvider.settings.voiceTriggerPhrases;
 
                 if (phrases.isEmpty) {
                   return const EmptyState(

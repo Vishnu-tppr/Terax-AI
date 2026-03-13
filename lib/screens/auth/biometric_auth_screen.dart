@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:terax_ai_app/utils/theme/app_theme.dart';
 
@@ -12,7 +11,6 @@ class BiometricAuthScreen extends StatefulWidget {
 
 class _BiometricAuthScreenState extends State<BiometricAuthScreen>
     with TickerProviderStateMixin {
-  final LocalAuthentication _localAuth = LocalAuthentication();
   late AnimationController _pulseController;
   late Animation<double> _pulseAnimation;
   bool _showBiometricDialog = false;
@@ -63,22 +61,6 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen>
         context.go('/main');
       }
     }
-  }
-
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Authentication Error'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
   }
 
   @override

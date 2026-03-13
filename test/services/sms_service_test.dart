@@ -51,7 +51,7 @@ void main() {
         // Arrange
         final recipients = ['+1234567890', '+0987654321'];
         const message = 'Test emergency message';
-        
+
         when(mockDio.post(any, data: anyNamed('data')))
             .thenAnswer((_) async => Response(
                   data: {'message_id': 'msg_123', 'status': 'sent'},
@@ -76,16 +76,15 @@ void main() {
         // Arrange
         final recipients = ['+1234567890'];
         const message = 'Test message';
-        
-        when(mockDio.post(any, data: anyNamed('data')))
-            .thenThrow(DioException(
-              requestOptions: RequestOptions(path: ''),
-              response: Response(
-                data: {'error': 'Rate limit exceeded'},
-                statusCode: 429,
-                requestOptions: RequestOptions(path: ''),
-              ),
-            ));
+
+        when(mockDio.post(any, data: anyNamed('data'))).thenThrow(DioException(
+          requestOptions: RequestOptions(path: ''),
+          response: Response(
+            data: {'error': 'Rate limit exceeded'},
+            statusCode: 429,
+            requestOptions: RequestOptions(path: ''),
+          ),
+        ));
 
         // Act
         final result = await service.sendSmsViaBackend(
@@ -224,9 +223,10 @@ void main() {
     });
 
     group('Error Handling', () {
-      test('should throw error when sending SMS without initialization', () async {
+      test('should throw error when sending SMS without initialization',
+          () async {
         final uninitializedService = SmsService.instance;
-        
+
         expect(
           () async => await uninitializedService.sendSmsViaBackend(
             recipients: ['+1234567890'],
@@ -243,11 +243,10 @@ void main() {
           apiKey: 'test_key',
         );
 
-        when(mockDio.post(any, data: anyNamed('data')))
-            .thenThrow(DioException(
-              requestOptions: RequestOptions(path: ''),
-              type: DioExceptionType.connectionTimeout,
-            ));
+        when(mockDio.post(any, data: anyNamed('data'))).thenThrow(DioException(
+          requestOptions: RequestOptions(path: ''),
+          type: DioExceptionType.connectionTimeout,
+        ));
 
         // Act
         final result = await service.sendSmsViaBackend(
@@ -272,7 +271,7 @@ void main() {
       test('should check delivery status', () async {
         // Arrange
         const messageId = 'msg_123';
-        
+
         when(mockDio.get('/v1/emergency/sms-status/$messageId'))
             .thenAnswer((_) async => Response(
                   data: {'status': 'delivered'},

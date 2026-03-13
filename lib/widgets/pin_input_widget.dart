@@ -127,16 +127,19 @@ class _PinInputWidgetState extends State<PinInputWidget>
           Text(
             widget.title,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
           ),
           const SizedBox(height: 8),
           Text(
             widget.subtitle,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-            ),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.7),
+                ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 32),
@@ -169,7 +172,8 @@ class _PinInputWidgetState extends State<PinInputWidget>
                               child: Text(
                                 isFilled ? _pin[index] : '',
                                 style: TextStyle(
-                                  color: Theme.of(context).colorScheme.onPrimary,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -226,7 +230,10 @@ class _PinInputWidgetState extends State<PinInputWidget>
               child: Text(
                 'Cancel',
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.7),
                 ),
               ),
             ),
@@ -246,16 +253,17 @@ class _PinInputWidgetState extends State<PinInputWidget>
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
             border: Border.all(
-              color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+              color:
+                  Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
             ),
           ),
           child: Center(
             child: Text(
               number,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w500,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
             ),
           ),
         ),
@@ -277,7 +285,8 @@ class _PinInputWidgetState extends State<PinInputWidget>
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
             border: Border.all(
-              color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+              color:
+                  Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
             ),
           ),
           child: Center(

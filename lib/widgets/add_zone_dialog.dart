@@ -59,7 +59,8 @@ class _AddZoneDialogState extends State<AddZoneDialog> {
             ),
             TextFormField(
               initialValue: _radius.toString(),
-              decoration: const InputDecoration(labelText: 'Radius (in meters)'),
+              decoration:
+                  const InputDecoration(labelText: 'Radius (in meters)'),
               keyboardType: TextInputType.number,
               validator: (value) {
                 if (value == null || double.tryParse(value) == null) {

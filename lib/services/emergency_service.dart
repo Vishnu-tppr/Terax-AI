@@ -284,7 +284,8 @@ class EmergencyService {
         id: 'log_${DateTime.now().millisecondsSinceEpoch}',
         timestamp: DateTime.now(),
         triggerType: TriggerType.manual, // Assuming manual logging
-        status: IncidentStatus.resolved, // Or a specific 'logged' status if available
+        status: IncidentStatus
+            .resolved, // Or a specific 'logged' status if available
         description: 'Incident logged: $incidentType',
         triggeredAt: DateTime.now(),
         notes: metadata?.toString() ?? 'No metadata',
@@ -298,7 +299,6 @@ class EmergencyService {
       // In a real app, you would save this incident:
       // final incidentsProvider = Provider.of<IncidentsProvider>(context, listen: false);
       // incidentsProvider.addIncident(incident);
-
     } catch (e) {
       if (kDebugMode) {
         print('Error logging incident: $e');

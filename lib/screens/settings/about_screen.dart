@@ -231,7 +231,8 @@ class _AboutScreenState extends State<AboutScreen> {
                                 ),
                           ),
                           const SizedBox(height: 16),
-                          _buildInfoRow('Owned and Developed by', 'TERAX AI Team'),
+                          _buildInfoRow(
+                              'Owned and Developed by', 'TERAX AI Team'),
                           _buildInfoRow(
                               'Build Number', _packageInfo?.buildNumber ?? '1'),
                           _buildInfoRow('Package Name',

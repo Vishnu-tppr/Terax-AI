@@ -25,9 +25,9 @@ class QuickActionCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: color.withAlpha((255 * 0.1).round()),
           borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-              color: color.withAlpha((255 * 0.3).round()),
-            ),
+          border: Border.all(
+            color: color.withAlpha((255 * 0.3).round()),
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,16 +59,16 @@ class QuickActionCard extends StatelessWidget {
             Text(
               title,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: color,
-              ),
+                    fontWeight: FontWeight.w600,
+                    color: color,
+                  ),
             ),
             const SizedBox(height: 4),
             Text(
               subtitle,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: color.withAlpha((255 * 0.8).round()),
-              ),
+                    color: color.withAlpha((255 * 0.8).round()),
+                  ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),

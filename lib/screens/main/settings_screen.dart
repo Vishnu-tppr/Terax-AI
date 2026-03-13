@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
@@ -1023,7 +1022,8 @@ class _AppSettingsState extends State<AppSettings>
                       context: context,
                       builder: (context) => AlertDialog(
                         title: const Text('Sign Out'),
-                        content: const Text('Are you sure you want to sign out?'),
+                        content:
+                            const Text('Are you sure you want to sign out?'),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context),
@@ -1035,7 +1035,8 @@ class _AppSettingsState extends State<AppSettings>
                               context.go('/signin');
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context).colorScheme.error,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.error,
                             ),
                             child: const Text('Sign Out'),
                           ),
@@ -1330,18 +1331,23 @@ class _AppSettingsState extends State<AppSettings>
       if (pickedFile != null) {
         // Load and process the image
         final File imageFile = File(pickedFile.path);
-        final img.Image? originalImage = img.decodeImage(await imageFile.readAsBytes());
+        final img.Image? originalImage =
+            img.decodeImage(await imageFile.readAsBytes());
 
         if (originalImage != null) {
           // Resize to 512x512 and compress to 80% quality
-          final img.Image resizedImage = img.copyResize(originalImage, width: 512, height: 512);
-          final Uint8List compressedImage = img.encodePng(resizedImage, level: 8); // Level 8 = ~80% quality
+          final img.Image resizedImage =
+              img.copyResize(originalImage, width: 512, height: 512);
+          final Uint8List compressedImage =
+              img.encodePng(resizedImage, level: 8); // Level 8 = ~80% quality
 
           // Save to app directory
           final Directory appDir = await getApplicationDocumentsDirectory();
-          final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+          final String timestamp =
+              DateTime.now().millisecondsSinceEpoch.toString();
           final String fileName = 'profile_image_$timestamp.png';
-          final File savedImage = await File('${appDir.path}/$fileName').writeAsBytes(compressedImage);
+          final File savedImage = await File('${appDir.path}/$fileName')
+              .writeAsBytes(compressedImage);
 
           setState(() {
             _profileImage = savedImage;
@@ -1404,7 +1410,8 @@ class _AppSettingsState extends State<AppSettings>
               const Divider(),
               ListTile(
                 leading: Icon(Icons.delete, color: AppTheme.primaryRed),
-                title: Text('Remove Picture', style: TextStyle(color: AppTheme.primaryRed)),
+                title: Text('Remove Picture',
+                    style: TextStyle(color: AppTheme.primaryRed)),
                 onTap: () {
                   Navigator.pop(context);
                   _removeProfileImage();

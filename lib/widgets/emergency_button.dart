@@ -21,10 +21,9 @@ class EmergencyButton extends StatelessWidget {
       child: AnimatedBuilder(
         animation: Listenable.merge([pulseAnimation, emergencyAnimation]),
         builder: (context, child) {
-          final scale = isActive 
-              ? emergencyAnimation.value 
-              : pulseAnimation.value;
-          
+          final scale =
+              isActive ? emergencyAnimation.value : pulseAnimation.value;
+
           return Transform.scale(
             scale: scale,
             child: GestureDetector(
@@ -33,7 +32,7 @@ class EmergencyButton extends StatelessWidget {
                 width: 200,
                 height: 200,
                 decoration: BoxDecoration(
-                  gradient: isActive 
+                  gradient: isActive
                       ? AppTheme.primaryGradient
                       : AppTheme.primaryGradient,
                   shape: BoxShape.circle,
@@ -83,7 +82,8 @@ class EmergencyButton extends StatelessWidget {
                               Text(
                                 'Help is on the way',
                                 style: TextStyle(
-                                  color: Colors.white.withAlpha((255 * 0.9).round()),
+                                  color: Colors.white
+                                      .withAlpha((255 * 0.9).round()),
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
                                 ),

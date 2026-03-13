@@ -26,12 +26,12 @@ class _CountdownWidgetState extends State<CountdownWidget>
   @override
   void initState() {
     super.initState();
-    
+
     _pulseController = AnimationController(
       duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
-    
+
     _progressController = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
@@ -98,21 +98,22 @@ class _CountdownWidgetState extends State<CountdownWidget>
                   ),
                 ),
                 const SizedBox(height: 20),
-                
+
                 // Countdown circle
                 AnimatedBuilder(
                   animation: _pulseAnimation,
                   builder: (context, child) {
                     return Transform.scale(
-                      scale: remainingSeconds <= 3 ? _pulseAnimation.value : 1.0,
+                      scale:
+                          remainingSeconds <= 3 ? _pulseAnimation.value : 1.0,
                       child: Container(
                         width: 200,
                         height: 200,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: remainingSeconds <= 3 
-                                ? AppTheme.primaryRed 
+                            color: remainingSeconds <= 3
+                                ? AppTheme.primaryRed
                                 : AppTheme.warningAmber,
                             width: 8,
                           ),
@@ -128,21 +129,21 @@ class _CountdownWidgetState extends State<CountdownWidget>
                                   strokeWidth: 8,
                                   backgroundColor: Colors.transparent,
                                   valueColor: AlwaysStoppedAnimation<Color>(
-                                    remainingSeconds <= 3 
-                                        ? AppTheme.primaryRed 
+                                    remainingSeconds <= 3
+                                        ? AppTheme.primaryRed
                                         : AppTheme.warningAmber,
                                   ),
                                 );
                               },
                             ),
-                            
+
                             // Countdown number
                             Center(
                               child: Text(
                                 '$remainingSeconds',
                                 style: TextStyle(
-                                  color: remainingSeconds <= 3 
-                                      ? AppTheme.primaryRed 
+                                  color: remainingSeconds <= 3
+                                      ? AppTheme.primaryRed
                                       : Colors.white,
                                   fontSize: 72,
                                   fontWeight: FontWeight.bold,
@@ -155,26 +156,26 @@ class _CountdownWidgetState extends State<CountdownWidget>
                     );
                   },
                 ),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // Message
                 Text(
-                  remainingSeconds <= 3 
-                      ? 'ACTIVATING EMERGENCY...' 
+                  remainingSeconds <= 3
+                      ? 'ACTIVATING EMERGENCY...'
                       : 'Tap CANCEL to stop',
                   style: TextStyle(
-                    color: remainingSeconds <= 3 
-                        ? AppTheme.primaryRed 
+                    color: remainingSeconds <= 3
+                        ? AppTheme.primaryRed
                         : Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // Cancel button (only show if more than 1 second remaining)
                 if (remainingSeconds > 1)
                   SizedBox(
@@ -231,7 +232,7 @@ class CountdownOverlay extends StatelessWidget {
           stream: CountdownService.instance.countdownStream,
           builder: (context, snapshot) {
             final isActive = CountdownService.instance.isActive;
-            
+
             if (!isActive) {
               return const SizedBox.shrink();
             }

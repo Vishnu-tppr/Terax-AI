@@ -76,7 +76,8 @@ class BackupRestoreWidget extends StatelessWidget {
       title: 'Backup & Restore',
       children: [
         ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           leading: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
@@ -111,7 +112,8 @@ class BackupRestoreWidget extends StatelessWidget {
           ),
         ),
         ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           leading: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(

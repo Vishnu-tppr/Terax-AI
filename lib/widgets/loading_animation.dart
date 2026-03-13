@@ -53,7 +53,8 @@ class _LoadingAnimationState extends State<LoadingAnimation>
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: (widget.color ?? AppTheme.primaryRed).withValues(alpha: 0.3),
+                color: (widget.color ?? AppTheme.primaryRed)
+                    .withValues(alpha: 0.3),
                 width: 3,
               ),
             ),
@@ -66,7 +67,8 @@ class _LoadingAnimationState extends State<LoadingAnimation>
                   end: Alignment.bottomRight,
                   colors: [
                     widget.color ?? AppTheme.primaryRed,
-                    (widget.color ?? AppTheme.primaryRed).withValues(alpha: 0.3),
+                    (widget.color ?? AppTheme.primaryRed)
+                        .withValues(alpha: 0.3),
                   ],
                 ),
               ),

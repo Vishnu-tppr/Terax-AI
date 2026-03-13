@@ -57,7 +57,8 @@ class _AddContactDialogState extends State<AddContactDialog> {
       if (widget.contactToEdit != null) {
         // Edit existing contact
         contactsProvider.updateContact(
-          EmergencyContact( // Construct EmergencyContact object
+          EmergencyContact(
+            // Construct EmergencyContact object
             id: widget.contactToEdit!.id,
             name: _nameController.text.trim(),
             phoneNumber: _phoneController.text.trim(),
@@ -66,16 +67,20 @@ class _AddContactDialogState extends State<AddContactDialog> {
                 : _emailController.text.trim(),
             relationship: _selectedRelationship,
             priority: _selectedPriority,
-            notificationMethods: widget.contactToEdit!.notificationMethods, // Keep existing methods or update if needed
+            notificationMethods: widget.contactToEdit!
+                .notificationMethods, // Keep existing methods or update if needed
             isPrimary: _isPrimary,
-            createdAt: widget.contactToEdit!.createdAt, // Preserve original creation/update times
+            createdAt: widget.contactToEdit!
+                .createdAt, // Preserve original creation/update times
             updatedAt: DateTime.now(),
           ),
         );
       } else {
         // Add new contact
         final newContact = EmergencyContact(
-          id: DateTime.now().millisecondsSinceEpoch.toString(), // Generate a unique ID
+          id: DateTime.now()
+              .millisecondsSinceEpoch
+              .toString(), // Generate a unique ID
           name: _nameController.text.trim(),
           phoneNumber: _phoneController.text.trim(),
           email: _emailController.text.trim().isEmpty

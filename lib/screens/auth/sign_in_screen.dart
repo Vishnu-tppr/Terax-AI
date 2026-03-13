@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../../providers/auth_provider.dart';
 import 'package:terax_ai_app/utils/theme/app_theme.dart';
 
@@ -178,15 +177,16 @@ class _SignInScreenState extends State<SignInScreen> {
                       : () async {
                           if (formKey.currentState!.validate()) {
                             final navigator = Navigator.of(context);
-                            final scaffoldMessenger = ScaffoldMessenger.of(context);
-                            
+                            final scaffoldMessenger =
+                                ScaffoldMessenger.of(context);
+
                             final success = await authProvider.resetPassword(
                               emailController.text.trim(),
                             );
-                            
+
                             if (mounted) {
                               navigator.pop();
-                              
+
                               if (success) {
                                 scaffoldMessenger.showSnackBar(
                                   const SnackBar(
@@ -200,7 +200,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                 scaffoldMessenger.showSnackBar(
                                   SnackBar(
                                     content: Text(
-                                      authProvider.error ?? 'Failed to send reset link',
+                                      authProvider.error ??
+                                          'Failed to send reset link',
                                     ),
                                     backgroundColor: AppTheme.errorColor,
                                   ),
@@ -219,7 +220,8 @@ class _SignInScreenState extends State<SignInScreen> {
                           width: 16,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
                         )
                       : const Text(

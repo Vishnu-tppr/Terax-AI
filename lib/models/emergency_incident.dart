@@ -73,8 +73,6 @@ class EmergencyIncident {
 
   Map<String, dynamic> toJson() => _$EmergencyIncidentToJson(this);
 
-
-
   String get triggerTypeText {
     switch (triggerType) {
       case TriggerType.button:
@@ -89,8 +87,6 @@ class EmergencyIncident {
         return 'Safe Zone Exit';
       case TriggerType.manual:
         return 'Manual Trigger';
-      default:
-        return 'Unknown';
     }
   }
 

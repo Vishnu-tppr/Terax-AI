@@ -32,7 +32,9 @@ class ApiKeyConfig {
     return ApiKeyConfig(
       key: json['key'],
       description: json['description'],
-      expiresAt: json['expires_at'] != null ? DateTime.parse(json['expires_at']) : null,
+      expiresAt: json['expires_at'] != null
+          ? DateTime.parse(json['expires_at'])
+          : null,
       isActive: json['is_active'] ?? true,
       metadata: json['metadata'],
     );
@@ -101,7 +103,7 @@ class ApiKeyService {
       for (final keyType in ApiKeyType.values) {
         final keyName = _getStorageKeyName(keyType);
         final storedData = await _secureStorage.read(key: keyName);
-        
+
         if (storedData != null) {
           final config = ApiKeyConfig.fromJson(jsonDecode(storedData));
           if (config.isValid) {
@@ -119,7 +121,8 @@ class ApiKeyService {
     final envMappings = {
       ApiKeyType.backend: 'CLIENT_API_KEY',
       ApiKeyType.googleMaps: 'GOOGLE_MAPS_API_KEY',
-      ApiKeyType.twilio: 'TWILIO_ACCOUNT_SID', // Note: Twilio should be backend-only
+      ApiKeyType.twilio:
+          'TWILIO_ACCOUNT_SID', // Note: Twilio should be backend-only
       ApiKeyType.firebase: 'FIREBASE_API_KEY',
       ApiKeyType.gemini: 'GEMINI_API_KEY',
       ApiKeyType.openai: 'OPENAI_API_KEY',
@@ -252,8 +255,8 @@ class ApiKeyService {
         ),
       );
 
-      return response.statusCode == 200 && 
-             response.data['status'] != 'REQUEST_DENIED';
+      return response.statusCode == 200 &&
+          response.data['status'] != 'REQUEST_DENIED';
     } catch (e) {
       return false;
     }
@@ -261,7 +264,9 @@ class ApiKeyService {
 
   /// Get all stored API key types
   List<ApiKeyType> getStoredApiKeyTypes() {
-    return _apiKeys.keys.where((type) => _apiKeys[type]?.isValid == true).toList();
+    return _apiKeys.keys
+        .where((type) => _apiKeys[type]?.isValid == true)
+        .toList();
   }
 
   /// Clear all API keys
@@ -283,7 +288,7 @@ class ApiKeyService {
   /// Get API key status summary
   Map<String, dynamic> getApiKeyStatus() {
     final status = <String, dynamic>{};
-    
+
     for (final type in ApiKeyType.values) {
       final config = _apiKeys[type];
       status[type.toString().split('.').last] = {
@@ -294,7 +299,7 @@ class ApiKeyService {
         'expires_at': config?.expiresAt?.toIso8601String(),
       };
     }
-    
+
     return status;
   }
 
@@ -310,7 +315,8 @@ class ApiKeyService {
       // This would require specific implementation for each API provider (Google, OpenAI, etc.)
       // For now, expired keys will need to be manually updated by the user
       if (kDebugMode) {
-        print('Found ${expiredKeys.length} expired API keys that need manual refresh');
+        print(
+            'Found ${expiredKeys.length} expired API keys that need manual refresh');
       }
     }
   }

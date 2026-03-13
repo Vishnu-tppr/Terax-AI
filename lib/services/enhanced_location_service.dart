@@ -21,22 +21,22 @@ class LocationData {
   });
 
   Map<String, dynamic> toJson() => {
-    'latitude': latitude,
-    'longitude': longitude,
-    'timestamp': timestamp.toIso8601String(),
-    'accuracy': accuracy,
-    'address': address,
-    'metadata': metadata,
-  };
+        'latitude': latitude,
+        'longitude': longitude,
+        'timestamp': timestamp.toIso8601String(),
+        'accuracy': accuracy,
+        'address': address,
+        'metadata': metadata,
+      };
 
   factory LocationData.fromJson(Map<String, dynamic> json) => LocationData(
-    latitude: json['latitude'],
-    longitude: json['longitude'],
-    timestamp: DateTime.parse(json['timestamp']),
-    accuracy: json['accuracy'],
-    address: json['address'],
-    metadata: json['metadata'],
-  );
+        latitude: json['latitude'],
+        longitude: json['longitude'],
+        timestamp: DateTime.parse(json['timestamp']),
+        accuracy: json['accuracy'],
+        address: json['address'],
+        metadata: json['metadata'],
+      );
 }
 
 class EnhancedLocationService {
@@ -83,7 +83,7 @@ class EnhancedLocationService {
 
       // Get initial location
       await getCurrentLocation();
-      
+
       return true;
     } catch (e) {
       if (kDebugMode) {
@@ -97,22 +97,22 @@ class EnhancedLocationService {
   Future<bool> _checkPermissions() async {
     try {
       LocationPermission permission = await Geolocator.checkPermission();
-      
+
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
           return false;
         }
       }
-      
+
       if (permission == LocationPermission.deniedForever) {
         // Open app settings
         await Geolocator.openAppSettings();
         return false;
       }
 
-      return permission == LocationPermission.whileInUse || 
-             permission == LocationPermission.always;
+      return permission == LocationPermission.whileInUse ||
+          permission == LocationPermission.always;
     } catch (e) {
       if (kDebugMode) {
         print('Error checking location permissions: $e');
@@ -133,17 +133,18 @@ class EnhancedLocationService {
 
       final position = await Geolocator.getCurrentPosition(
         locationSettings: LocationSettings(
-          accuracy: highAccuracy ? LocationAccuracy.high : LocationAccuracy.medium,
+          accuracy:
+              highAccuracy ? LocationAccuracy.high : LocationAccuracy.medium,
           timeLimit: timeout ?? const Duration(seconds: 30),
         ),
       );
 
       _lastKnownPosition = position;
       _lastLocationUpdate = DateTime.now();
-      
+
       // Update address
       await _updateCurrentAddress(position);
-      
+
       // Store location history
       _locationHistory.add(LocationData(
         latitude: position.latitude,
@@ -152,12 +153,12 @@ class EnhancedLocationService {
         accuracy: position.accuracy,
         address: _currentAddress,
       ));
-      
+
       // Keep only last 100 locations
       if (_locationHistory.length > 100) {
         _locationHistory.removeAt(0);
       }
-      
+
       return position;
     } catch (e) {
       if (kDebugMode) {
@@ -174,7 +175,7 @@ class EnhancedLocationService {
         position.latitude,
         position.longitude,
       );
-      
+
       if (placemarks.isNotEmpty) {
         final placemark = placemarks.first;
         _currentAddress = _formatAddress(placemark);
@@ -189,7 +190,7 @@ class EnhancedLocationService {
   /// Format address from placemark
   String _formatAddress(Placemark placemark) {
     final parts = <String>[];
-    
+
     if (placemark.street?.isNotEmpty == true) {
       parts.add(placemark.street!);
     }
@@ -202,7 +203,7 @@ class EnhancedLocationService {
     if (placemark.country?.isNotEmpty == true) {
       parts.add(placemark.country!);
     }
-    
+
     return parts.join(', ');
   }
 
@@ -232,7 +233,7 @@ class EnhancedLocationService {
           _lastKnownPosition = position;
           _lastLocationUpdate = DateTime.now();
           _updateCurrentAddress(position);
-          
+
           // Add to history
           _locationHistory.add(LocationData(
             latitude: position.latitude,
@@ -241,7 +242,7 @@ class EnhancedLocationService {
             accuracy: position.accuracy,
             address: _currentAddress,
           ));
-          
+
           // Keep only last 100 locations
           if (_locationHistory.length > 100) {
             _locationHistory.removeAt(0);
@@ -289,7 +290,7 @@ class EnhancedLocationService {
   /// Get Google Maps URL for current location
   String? getGoogleMapsUrl() {
     if (_lastKnownPosition == null) return null;
-    
+
     return 'https://maps.google.com/?q=${_lastKnownPosition!.latitude},${_lastKnownPosition!.longitude}';
   }
 
@@ -302,7 +303,7 @@ class EnhancedLocationService {
     final message = customMessage ?? 'Here is my current location:';
     final mapsUrl = getGoogleMapsUrl()!;
     final address = _currentAddress ?? 'Address not available';
-    
+
     return '$message\n\n📍 $address\n🗺️ $mapsUrl\n\n⏰ Shared at ${DateTime.now().toString()}';
   }
 

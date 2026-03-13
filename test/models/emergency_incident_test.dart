@@ -29,7 +29,8 @@ void main() {
     });
 
     test('should parse timestamp from milliseconds since epoch (int)', () {
-      const timestamp = 1723127400000; // 2024-08-08T12:30:00.000Z in milliseconds
+      const timestamp =
+          1723127400000; // 2024-08-08T12:30:00.000Z in milliseconds
       const triggeredAt = 1723127400000;
       const resolvedAt = 1723129200000; // 1 hour later
 
@@ -116,9 +117,7 @@ void main() {
 
     test('copyWith should create modified copy', () {
       final copied = incident.copyWith(
-        status: IncidentStatus.resolved,
-        notes: 'Updated notes'
-      );
+          status: IncidentStatus.resolved, notes: 'Updated notes');
 
       expect(copied.id, incident.id);
       expect(copied.status, IncidentStatus.resolved);

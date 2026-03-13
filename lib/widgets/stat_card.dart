@@ -30,7 +30,7 @@ class StatCard extends StatelessWidget {
           Text(
             value,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: color, 
+                  color: color,
                   fontWeight: FontWeight.bold,
                 ),
           ),

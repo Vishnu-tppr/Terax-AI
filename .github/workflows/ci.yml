@@ -218,7 +218,7 @@ jobs:
       run: npm run lint --if-present
       
     - name: Run tests
-      if: ${{ hashFiles('backend/tests/**', 'backend/**/*.test.js', 'backend/**/*.spec.js', 'backend/**/*.test.cjs', 'backend/**/*.spec.cjs') != '' }}
+      if: ${{ hashFiles('backend/tests/**') != '' }}
       run: npm test --if-present
       env:
         NODE_ENV: test

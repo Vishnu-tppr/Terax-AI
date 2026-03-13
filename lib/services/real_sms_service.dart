@@ -43,7 +43,8 @@ class RealSmsService {
 
       // Filter contacts that accept SMS notifications
       final smsContacts = contacts
-          .where((contact) => contact.notificationMethods.contains(NotificationMethod.sms))
+          .where((contact) =>
+              contact.notificationMethods.contains(NotificationMethod.sms))
           .toList();
 
       if (smsContacts.isEmpty) {
@@ -72,7 +73,8 @@ class RealSmsService {
           if (result) {
             sentCount++;
             if (kDebugMode) {
-              print('SMS sent successfully to ${contact.name}: ${contact.phoneNumber}');
+              print(
+                  'SMS sent successfully to ${contact.name}: ${contact.phoneNumber}');
             }
           } else {
             failedContacts.add(contact.name);
@@ -124,7 +126,8 @@ class RealSmsService {
           'UPDATE from $userName: $message\n\nTime: $timestamp\nSent via Terax AI Safety App';
 
       final smsContacts = contacts
-          .where((contact) => contact.notificationMethods.contains(NotificationMethod.sms))
+          .where((contact) =>
+              contact.notificationMethods.contains(NotificationMethod.sms))
           .toList();
 
       if (smsContacts.isEmpty) {
@@ -199,12 +202,14 @@ class RealSmsService {
 
       if (accountSid.isEmpty || authToken.isEmpty || fromNumber.isEmpty) {
         if (kDebugMode) {
-          print('Twilio credentials not configured. Please set TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, and TWILIO_PHONE_NUMBER in .env');
+          print(
+              'Twilio credentials not configured. Please set TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, and TWILIO_PHONE_NUMBER in .env');
         }
         return false;
       }
 
-      final url = Uri.parse('https://api.twilio.com/2010-04-01/Accounts/$accountSid/Messages.json');
+      final url = Uri.parse(
+          'https://api.twilio.com/2010-04-01/Accounts/$accountSid/Messages.json');
 
       // Twilio API credentials for basic authentication
       final credentials = base64Encode(utf8.encode('$accountSid:$authToken'));
@@ -251,7 +256,8 @@ class RealSmsService {
         return null;
       }
 
-      final url = Uri.parse('https://api.twilio.com/2010-04-01/Accounts/$accountSid/Messages/$messageSid.json');
+      final url = Uri.parse(
+          'https://api.twilio.com/2010-04-01/Accounts/$accountSid/Messages/$messageSid.json');
 
       final credentials = base64Encode(utf8.encode('$accountSid:$authToken'));
 
@@ -281,7 +287,9 @@ class RealSmsService {
     final authToken = dotenv.env['TWILIO_AUTH_TOKEN'] ?? '';
     final fromNumber = dotenv.env['TWILIO_PHONE_NUMBER'] ?? '';
 
-    return accountSid.isNotEmpty && authToken.isNotEmpty && fromNumber.isNotEmpty;
+    return accountSid.isNotEmpty &&
+        authToken.isNotEmpty &&
+        fromNumber.isNotEmpty;
   }
 
   /// Get SMS configuration status for UI display
@@ -296,7 +304,8 @@ class RealSmsService {
   Future<void> sendSmsToContacts(List<EmergencyContact> contacts,
       {int maxPriority = 2}) async {
     final smsContacts = contacts
-        .where((c) => c.phoneNumber.isNotEmpty && c.priorityNumber <= maxPriority)
+        .where(
+            (c) => c.phoneNumber.isNotEmpty && c.priorityNumber <= maxPriority)
         .toList();
     smsContacts.sort((a, b) => a.priority.compareTo(b.priority));
 

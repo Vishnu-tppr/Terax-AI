@@ -22,7 +22,9 @@ class AuthService {
 
   static String get _baseUrl {
     final baseUrl = EnvironmentConfig.backendBaseUrl.trim();
-    return baseUrl.endsWith('/') ? baseUrl.substring(0, baseUrl.length - 1) : baseUrl;
+    return baseUrl.endsWith('/')
+        ? baseUrl.substring(0, baseUrl.length - 1)
+        : baseUrl;
   }
 
   static Uri _uri(String path) => Uri.parse('$_baseUrl$path');
@@ -169,7 +171,8 @@ class AuthService {
 
     final payload = _decodeJson(response);
     final session = _requireSession(payload);
-    await _saveUserData(session.user, session.accessToken, session.refreshToken);
+    await _saveUserData(
+        session.user, session.accessToken, session.refreshToken);
     return true;
   }
 
@@ -365,7 +368,8 @@ class AuthService {
     final userJson = payload['user'];
     final sessionJson = payload['session'];
 
-    if (userJson is! Map<String, dynamic> || sessionJson is! Map<String, dynamic>) {
+    if (userJson is! Map<String, dynamic> ||
+        sessionJson is! Map<String, dynamic>) {
       return null;
     }
 
@@ -388,7 +392,8 @@ class AuthService {
   static Map<String, dynamic> _decodeJson(http.Response response) {
     final decoded = jsonDecode(response.body);
     if (decoded is! Map<String, dynamic>) {
-      throw const _AuthApiException('Invalid response from authentication server.', null);
+      throw const _AuthApiException(
+          'Invalid response from authentication server.', null);
     }
     return decoded;
   }
@@ -396,7 +401,8 @@ class AuthService {
   static _AuthApiException _buildApiException(http.Response response) {
     try {
       final payload = _decodeJson(response);
-      final detail = payload['detail'] ?? payload['message'] ?? payload['error'];
+      final detail =
+          payload['detail'] ?? payload['message'] ?? payload['error'];
       if (detail is String && detail.isNotEmpty) {
         return _AuthApiException(detail, response.statusCode);
       }

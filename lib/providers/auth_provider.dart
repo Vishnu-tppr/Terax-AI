@@ -3,7 +3,6 @@ import 'dart:async';
 import '../models/user.dart';
 import '../services/auth_service.dart';
 
-
 class AuthProvider extends ChangeNotifier {
   User? _currentUser;
   bool _isLoading = false;
@@ -26,9 +25,10 @@ class AuthProvider extends ChangeNotifier {
   /// Wait for authentication initialization to complete
   Future<void> waitForInitialization() async {
     if (kDebugMode) {
-      print('🔍 [AuthProvider] waitForInitialization called, isInitialized: $_isInitialized');
+      print(
+          '🔍 [AuthProvider] waitForInitialization called, isInitialized: $_isInitialized');
     }
-    
+
     if (_isInitialized) {
       if (kDebugMode) {
         print('🔍 [AuthProvider] Already initialized, returning immediately');
@@ -42,24 +42,29 @@ class AuthProvider extends ChangeNotifier {
       await Future.delayed(const Duration(milliseconds: 100));
       attempts++;
       if (kDebugMode && attempts % 10 == 0) {
-        print('🔍 [AuthProvider] Still waiting for initialization... attempt $attempts/50');
+        print(
+            '🔍 [AuthProvider] Still waiting for initialization... attempt $attempts/50');
       }
     }
-    
+
     if (kDebugMode) {
       if (_isInitialized) {
-        print('🔍 [AuthProvider] Initialization completed after $attempts attempts');
+        print(
+            '🔍 [AuthProvider] Initialization completed after $attempts attempts');
       } else {
-        print('⚠️ [AuthProvider] Initialization timeout after $attempts attempts');
+        print(
+            '⚠️ [AuthProvider] Initialization timeout after $attempts attempts');
       }
     }
   }
 
   Future<void> _initializeAuth() async {
-    const initializationTimeout = Duration(seconds: 10); // Max 10 seconds for auth initialization
+    const initializationTimeout =
+        Duration(seconds: 10); // Max 10 seconds for auth initialization
 
     if (kDebugMode) {
-      print('🔍 [AuthProvider] _initializeAuth started with ${initializationTimeout.inSeconds}s timeout');
+      print(
+          '🔍 [AuthProvider] _initializeAuth started with ${initializationTimeout.inSeconds}s timeout');
     }
 
     _setLoading(true);
@@ -86,10 +91,12 @@ class AuthProvider extends ChangeNotifier {
       _setError('Failed to initialize authentication: $e');
     } finally {
       _setLoading(false);
-      _isInitialized = true; // Mark as initialized regardless of success/failure
+      _isInitialized =
+          true; // Mark as initialized regardless of success/failure
 
       if (kDebugMode) {
-        print('🔍 [AuthProvider] _initializeAuth completed, isInitialized: $_isInitialized, isLoggedIn: $isLoggedIn');
+        print(
+            '🔍 [AuthProvider] _initializeAuth completed, isInitialized: $_isInitialized, isLoggedIn: $isLoggedIn');
       }
 
       notifyListeners();
@@ -104,7 +111,8 @@ class AuthProvider extends ChangeNotifier {
     final user = await AuthService.getCurrentUser();
 
     if (kDebugMode) {
-      print('🔍 [AuthProvider] AuthService.getCurrentUser() returned: ${user?.email ?? "null"}');
+      print(
+          '🔍 [AuthProvider] AuthService.getCurrentUser() returned: ${user?.email ?? "null"}');
     }
 
     if (user != null) {
@@ -127,7 +135,7 @@ class AuthProvider extends ChangeNotifier {
   }) async {
     _setLoading(true);
     _clearError();
-    
+
     try {
       final success = await AuthService.signUp(
         fullName: fullName,
@@ -135,7 +143,7 @@ class AuthProvider extends ChangeNotifier {
         password: password,
         phoneNumber: phoneNumber,
       );
-      
+
       if (success) {
         _currentUser = AuthService.currentUser;
         notifyListeners();
@@ -156,13 +164,13 @@ class AuthProvider extends ChangeNotifier {
   }) async {
     _setLoading(true);
     _clearError();
-    
+
     try {
       final success = await AuthService.signIn(
         email: email,
         password: password,
       );
-      
+
       if (success) {
         _currentUser = AuthService.currentUser;
         notifyListeners();
@@ -179,7 +187,7 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> signOut() async {
     _setLoading(true);
-    
+
     try {
       await AuthService.logout();
       _currentUser = null;
@@ -196,15 +204,15 @@ class AuthProvider extends ChangeNotifier {
     String? phoneNumber,
   }) async {
     if (_currentUser == null) return;
-    
+
     _setLoading(true);
-    
+
     try {
       await AuthService.updateProfile(
         fullName: fullName,
         phoneNumber: phoneNumber,
       );
-      
+
       _currentUser = AuthService.currentUser;
       notifyListeners();
     } catch (e) {
@@ -220,13 +228,13 @@ class AuthProvider extends ChangeNotifier {
   }) async {
     _setLoading(true);
     _clearError();
-    
+
     try {
       final success = await AuthService.changePassword(
         currentPassword: currentPassword,
         newPassword: newPassword,
       );
-      
+
       if (success) {
         _clearError();
         return true;
@@ -243,10 +251,10 @@ class AuthProvider extends ChangeNotifier {
   Future<bool> resetPassword(String email) async {
     _setLoading(true);
     _clearError();
-    
+
     try {
       final success = await AuthService.resetPassword(email);
-      
+
       if (success) {
         _clearError();
         return true;
