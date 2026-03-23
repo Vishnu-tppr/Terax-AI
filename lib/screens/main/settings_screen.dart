@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:terax_ai_app/utils/app_theme.dart';
 import 'package:terax_ai_app/widgets/custom_icon_widget.dart';
 import 'package:terax_ai_app/config/api_config.dart';
+import 'package:terax_ai_app/providers/auth_provider.dart';
 import 'package:terax_ai_app/providers/settings_provider.dart';
 import 'package:terax_ai_app/screens/settings/custom_phrases_screen.dart';
 import 'package:terax_ai_app/screens/settings/about_screen.dart';
@@ -854,6 +855,14 @@ class _AppSettingsState extends State<AppSettings>
   }
 
   Widget _buildAccountTab() {
+    final authUser = context.watch<AuthProvider>().currentUser;
+    final displayName = (authUser?.fullName.trim().isNotEmpty ?? false)
+        ? authUser!.fullName.trim()
+        : _userName;
+    final displayEmail = (authUser?.email.trim().isNotEmpty ?? false)
+        ? authUser!.email.trim()
+        : _userEmail;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Column(
@@ -893,10 +902,10 @@ class _AppSettingsState extends State<AppSettings>
                                     width: 60,
                                     height: 60,
                                     errorBuilder: (context, error, stackTrace) {
-                                      return _buildInitialsAvatar();
+                                      return _buildInitialsAvatar(displayName);
                                     },
                                   )
-                                : _buildInitialsAvatar(),
+                                : _buildInitialsAvatar(displayName),
                           ),
                         ),
                       ),
@@ -909,13 +918,13 @@ class _AppSettingsState extends State<AppSettings>
                           GestureDetector(
                             onTap: _editUserName,
                             child: Text(
-                              _userName.isNotEmpty
-                                  ? _userName
+                              displayName.isNotEmpty
+                                  ? displayName
                                   : 'Tap to set name',
                               style: AppTheme.lightTheme.textTheme.titleMedium
                                   ?.copyWith(
                                 fontWeight: FontWeight.w600,
-                                color: _userName.isNotEmpty
+                                color: displayName.isNotEmpty
                                     ? AppTheme.textPrimary
                                     : AppTheme.textSecondary,
                               ),
@@ -925,12 +934,12 @@ class _AppSettingsState extends State<AppSettings>
                           GestureDetector(
                             onTap: _editUserEmail,
                             child: Text(
-                              _userEmail.isNotEmpty
-                                  ? _userEmail
+                              displayEmail.isNotEmpty
+                                  ? displayEmail
                                   : 'Tap to set email',
                               style: AppTheme.lightTheme.textTheme.bodyMedium
                                   ?.copyWith(
-                                color: _userEmail.isNotEmpty
+                                color: displayEmail.isNotEmpty
                                     ? AppTheme.textSecondary
                                     : AppTheme.textSecondary
                                         .withValues(alpha: 0.7),
@@ -1102,10 +1111,19 @@ class _AppSettingsState extends State<AppSettings>
     try {
       final prefs = await SharedPreferences.getInstance();
       final profileImagePath = prefs.getString('profile_image_path');
+      final authUser = context.read<AuthProvider>().currentUser;
+      final storedUserName = prefs.getString('user_name') ?? '';
+      final storedUserEmail = prefs.getString('user_email') ?? '';
+      final resolvedUserName = (authUser?.fullName.trim().isNotEmpty ?? false)
+          ? authUser!.fullName.trim()
+          : storedUserName;
+      final resolvedUserEmail = (authUser?.email.trim().isNotEmpty ?? false)
+          ? authUser!.email.trim()
+          : storedUserEmail;
 
       setState(() {
-        _userName = prefs.getString('user_name') ?? '';
-        _userEmail = prefs.getString('user_email') ?? '';
+        _userName = resolvedUserName;
+        _userEmail = resolvedUserEmail;
         _profileImagePath = profileImagePath;
         _gestureDetectionEnabled =
             prefs.getBool('gesture_detection_enabled') ?? true;
@@ -1122,6 +1140,12 @@ class _AppSettingsState extends State<AppSettings>
         _dataBackupEnabled = prefs.getBool('data_backup_enabled') ?? false;
         _analyticsEnabled = prefs.getBool('analytics_enabled') ?? true;
       });
+
+      if (resolvedUserName != storedUserName ||
+          resolvedUserEmail != storedUserEmail) {
+        await prefs.setString('user_name', resolvedUserName);
+        await prefs.setString('user_email', resolvedUserEmail);
+      }
 
       // Load profile image if path exists and file exists
       if (profileImagePath != null) {
@@ -1462,15 +1486,15 @@ class _AppSettingsState extends State<AppSettings>
   }
 
   /// Build initials avatar widget as fallback
-  Widget _buildInitialsAvatar() {
+  Widget _buildInitialsAvatar(String displayName) {
     return Container(
       color: AppTheme.statusBlue.withValues(alpha: 0.1),
       width: 60,
       height: 60,
       child: Center(
         child: Text(
-          _userName.isNotEmpty
-              ? _userName
+          displayName.isNotEmpty
+              ? displayName
                   .split(' ')
                   .map((name) => name.isNotEmpty ? name[0] : '')
                   .join('')

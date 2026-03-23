@@ -185,6 +185,48 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> signInWithGoogle() async {
+    _setLoading(true);
+    _clearError();
+
+    try {
+      final success = await AuthService.signInWithGoogle();
+
+      if (success) {
+        _currentUser = AuthService.currentUser;
+        notifyListeners();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      _setError('Google sign in failed: $e');
+      return false;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<bool> signInWithBiometrics() async {
+    _setLoading(true);
+    _clearError();
+
+    try {
+      final success = await AuthService.signInWithBiometrics();
+
+      if (success) {
+        _currentUser = AuthService.currentUser;
+        notifyListeners();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      _setError('Biometric sign in failed: $e');
+      return false;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
   Future<void> signOut() async {
     _setLoading(true);
 

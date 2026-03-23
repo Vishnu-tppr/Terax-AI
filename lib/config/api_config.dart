@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -16,8 +17,13 @@ class ApiConfig {
 
       // If no API key is found, try to load from environment
       if (_cachedApiKey == null) {
+        final runtimeKey = dotenv.env['GEMINI_API_KEY']?.trim();
+        if (runtimeKey != null && runtimeKey.isNotEmpty) {
+          await setGeminiApiKey(runtimeKey);
+        }
+
         const defaultKey = String.fromEnvironment('GEMINI_API_KEY');
-        if (defaultKey.isNotEmpty) {
+        if (_cachedApiKey == null && defaultKey.isNotEmpty) {
           // Only set if not empty
           await setGeminiApiKey(defaultKey);
         }
@@ -118,10 +124,36 @@ class ApiConfig {
 class EnvironmentConfig {
   static const bool isProduction = bool.fromEnvironment('dart.vm.product');
   static const bool isDebug = !isProduction;
-  static const String backendBaseUrl = String.fromEnvironment(
+  static const String _compileTimeBackendBaseUrl = String.fromEnvironment(
     'BACKEND_BASE_URL',
-    defaultValue: 'http://localhost:8000',
+    defaultValue: '',
   );
+
+  static String get backendBaseUrl {
+    final runtimeValue = dotenv.env['BACKEND_BASE_URL']?.trim();
+    if (runtimeValue != null && runtimeValue.isNotEmpty) {
+      return _normalizeBackendBaseUrl(runtimeValue);
+    }
+
+    if (_compileTimeBackendBaseUrl.isNotEmpty) {
+      return _normalizeBackendBaseUrl(_compileTimeBackendBaseUrl);
+    }
+
+    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+      return 'http://10.0.2.2:8000';
+    }
+
+    return 'http://localhost:8000';
+  }
+
+  static String _normalizeBackendBaseUrl(String value) {
+    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+      return value
+          .replaceFirst('http://localhost', 'http://10.0.2.2')
+          .replaceFirst('http://127.0.0.1', 'http://10.0.2.2');
+    }
+    return value;
+  }
 
   /// API endpoints
   static const String geminiApiBaseUrl =

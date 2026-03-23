@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:local_auth/local_auth.dart';
-import '../../providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:terax_ai_app/utils/theme/app_theme.dart';
+import '../../providers/auth_provider.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -16,7 +15,6 @@ class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final LocalAuthentication _localAuth = LocalAuthentication();
   bool _obscurePassword = true;
   bool _isPasswordValid = false;
 
@@ -41,7 +39,15 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Future<void> _signIn() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Enter a valid email address and password first.'),
+          backgroundColor: AppTheme.errorColor,
+        ),
+      );
+      return;
+    }
 
     final authProvider = context.read<AuthProvider>();
     final success = await authProvider.signIn(
@@ -63,36 +69,23 @@ class _SignInScreenState extends State<SignInScreen> {
     }
   }
 
-  Future<void> _authenticateWithBiometrics() async {
-    try {
-      final bool isAvailable = await _localAuth.canCheckBiometrics;
-      if (!isAvailable) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text('Biometric authentication is not available')),
-          );
-        }
-        return;
-      }
+  Future<void> _signInWithGoogle() async {
+    final authProvider = context.read<AuthProvider>();
+    final success = await authProvider.signInWithGoogle();
 
-      final bool didAuthenticate = await _localAuth.authenticate(
-        localizedReason: 'Use your fingerprint to sign in',
-        options: const AuthenticationOptions(
-          biometricOnly: true,
-          stickyAuth: true,
+    if (!mounted) {
+      return;
+    }
+
+    if (success) {
+      context.go('/main');
+    } else if (authProvider.error != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(authProvider.error!),
+          backgroundColor: AppTheme.errorColor,
         ),
       );
-
-      if (didAuthenticate && mounted) {
-        context.go('/main');
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Authentication failed: $e')),
-        );
-      }
     }
   }
 
@@ -245,240 +238,286 @@ class _SignInScreenState extends State<SignInScreen> {
     final authProvider = context.watch<AuthProvider>();
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            children: [
-              const SizedBox(height: 40),
+      backgroundColor: Colors.black,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.white,
+              Colors.white,
+              Colors.black,
+            ],
+            stops: [0.0, 0.82, 1.0],
+          ),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              children: [
+                const SizedBox(height: 40),
 
-              // Logo
-              Image.asset(
-                'assets/icons/terax.jpg',
-                width: 80,
-                height: 80,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    width: 80,
-                    height: 80,
-                    color: Colors.grey[200],
-                    child: const Icon(
-                      Icons.image_not_supported,
-                      size: 40,
-                      color: Colors.grey,
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 8),
-
-              // Subtitle
-              const Text(
-                'Personal Safety Intelligence',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: AppTheme.neutral600,
-                  fontFamily: 'Poppins',
-                ),
-              ),
-              const SizedBox(height: 48),
-
-              // Welcome Back
-              const Text(
-                'Welcome Back',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: AppTheme.neutral800,
-                  fontFamily: 'Poppins',
-                ),
-              ),
-              const SizedBox(height: 8),
-
-              // Sign in message
-              const Text(
-                'Sign in to access your personal safety dashboard',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppTheme.neutral600,
-                  fontFamily: 'Poppins',
-                ),
-              ),
-              const SizedBox(height: 32),
-
-              // Sign In Form
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    // Email Field
-                    TextFormField(
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                        hintText: 'Email Address',
-                        prefixIcon: Icon(Icons.email_outlined),
+                // Logo
+                Image.asset(
+                  'assets/icons/terax.jpg',
+                  width: 80,
+                  height: 80,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      width: 80,
+                      height: 80,
+                      color: Colors.grey[200],
+                      child: const Icon(
+                        Icons.image_not_supported,
+                        size: 40,
+                        color: Colors.grey,
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your email';
-                        }
-                        if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                            .hasMatch(value)) {
-                          return 'Please enter a valid email';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 20),
+                    );
+                  },
+                ),
+                const SizedBox(height: 8),
 
-                    // Password Field
-                    TextFormField(
-                      controller: _passwordController,
-                      obscureText: _obscurePassword,
-                      decoration: InputDecoration(
-                        hintText: 'Password',
-                        prefixIcon: const Icon(Icons.lock_outlined),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscurePassword
-                                ? Icons.visibility_off_outlined
-                                : Icons.visibility_outlined,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            });
-                          },
+                // Subtitle
+                const Text(
+                  'Personal Safety Intelligence',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: AppTheme.neutral600,
+                    fontFamily: 'Poppins',
+                  ),
+                ),
+                const SizedBox(height: 48),
+
+                // Welcome Back
+                const Text(
+                  'Welcome Back',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.neutral800,
+                    fontFamily: 'Poppins',
+                  ),
+                ),
+                const SizedBox(height: 8),
+
+                // Sign in message
+                const Text(
+                  'Sign in to access your personal safety dashboard',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppTheme.neutral600,
+                    fontFamily: 'Poppins',
+                  ),
+                ),
+                const SizedBox(height: 32),
+
+                // Sign In Form
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      // Email Field
+                      TextFormField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: const InputDecoration(
+                          hintText: 'Email Address',
+                          prefixIcon: Icon(Icons.email_outlined),
                         ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        if (value.length < 6) {
-                          return 'Password must be at least 6 characters';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Forgot Password
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          _showForgotPasswordDialog();
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                              .hasMatch(value)) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
                         },
-                        child: const Text(
-                          'Forgot Password?',
-                          style: TextStyle(
-                            color: AppTheme.primaryBlue,
-                            fontFamily: 'Poppins',
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Password Field
+                      TextFormField(
+                        controller: _passwordController,
+                        obscureText: _obscurePassword,
+                        decoration: InputDecoration(
+                          hintText: 'Password',
+                          prefixIcon: const Icon(Icons.lock_outlined),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword
+                                  ? Icons.visibility_off_outlined
+                                  : Icons.visibility_outlined,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          if (value.length < 6) {
+                            return 'Password must be at least 6 characters';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Forgot Password
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {
+                            _showForgotPasswordDialog();
+                          },
+                          child: const Text(
+                            'Forgot Password?',
+                            style: TextStyle(
+                              color: AppTheme.primaryBlue,
+                              fontFamily: 'Poppins',
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 24),
+                      const SizedBox(height: 24),
 
-                    // Login Button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: authProvider.isLoading ? null : _signIn,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: _isPasswordValid
-                              ? Colors.green
-                              : AppTheme.neutral300,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                        ),
-                        child: authProvider.isLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.white),
+                      // Login Button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: authProvider.isLoading ? null : _signIn,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: _isPasswordValid
+                                ? Colors.green
+                                : AppTheme.neutral300,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                          ),
+                          child: authProvider.isLoading
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white),
+                                  ),
+                                )
+                              : const Text(
+                                  'Login',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'Poppins',
+                                  ),
                                 ),
-                              )
-                            : const Text(
-                                'Login',
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+
+                      // OR divider
+                      const Text(
+                        'OR',
+                        style: TextStyle(
+                          color: AppTheme.neutral500,
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton(
+                          onPressed:
+                              authProvider.isLoading ? null : _signInWithGoogle,
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            side: const BorderSide(color: AppTheme.neutral300),
+                            foregroundColor: AppTheme.neutral800,
+                            backgroundColor: Colors.white,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 24,
+                                height: 24,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: const Color(0xFFF1F3F4),
+                                ),
+                                alignment: Alignment.center,
+                                child: const Text(
+                                  'G',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF4285F4),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              const Text(
+                                'Continue with Google',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   fontFamily: 'Poppins',
                                 ),
                               ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-
-                    // OR divider
-                    const Text(
-                      'OR',
-                      style: TextStyle(
-                        color: AppTheme.neutral500,
-                        fontFamily: 'Poppins',
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-
-                    // Use Fingerprint button
-                    SizedBox(
-                      width: double.infinity,
-                      child: OutlinedButton.icon(
-                        onPressed: _authenticateWithBiometrics,
-                        icon: const Icon(Icons.fingerprint),
-                        label: const Text('Use Fingerprint'),
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          side: const BorderSide(color: AppTheme.primaryBlue),
-                          foregroundColor: AppTheme.primaryBlue,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-
-                    // Emergency notice
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: AppTheme.successColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppTheme.successColor.withValues(alpha: 0.3),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.check_circle,
-                            color: AppTheme.successColor,
-                            size: 20,
+                            ],
                           ),
-                          const SizedBox(width: 12),
-                          const Expanded(
-                            child: Text(
-                              'Emergency features work offline even without login',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: AppTheme.successColor,
-                                fontFamily: 'Poppins',
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      const SizedBox(height: 24),
+
+                      // Emergency notice
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: AppTheme.successColor.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color:
+                                AppTheme.successColor.withValues(alpha: 0.3),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.check_circle,
+                              color: AppTheme.successColor,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 12),
+                            const Expanded(
+                              child: Text(
+                                'Emergency features work offline even without login',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppTheme.successColor,
+                                  fontFamily: 'Poppins',
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../config/api_config.dart';
 import '../models/user.dart';
+import 'biometric_auth_service.dart';
 
 class AuthService {
   static const String _userKey = 'current_user';
@@ -173,6 +177,124 @@ class AuthService {
     final session = _requireSession(payload);
     await _saveUserData(
         session.user, session.accessToken, session.refreshToken);
+    return true;
+  }
+
+  static Future<bool> signInWithGoogle() async {
+    if (!kIsWeb &&
+        (defaultTargetPlatform == TargetPlatform.windows ||
+            defaultTargetPlatform == TargetPlatform.linux)) {
+      throw const _AuthApiException(
+        'Google sign-in is available on Android, iOS, macOS, and web builds. Use email login on Windows desktop or run the mobile app/emulator.',
+        null,
+      );
+    }
+
+    final webClientId = _googleWebClientId;
+    if (webClientId.isEmpty) {
+      throw const _AuthApiException(
+        'Google sign-in is not configured. Add GOOGLE_WEB_CLIENT_ID to .env first.',
+        null,
+      );
+    }
+
+    final googleSignIn = GoogleSignIn(
+      scopes: const ['email', 'profile'],
+      serverClientId: kIsWeb ? null : webClientId,
+      clientId: _googleClientId(webClientId),
+    );
+
+    GoogleSignInAccount? googleUser;
+    try {
+      if (await googleSignIn.isSignedIn()) {
+        await googleSignIn.signOut();
+      }
+      googleUser = await googleSignIn.signIn();
+    } on AssertionError {
+      throw _AuthApiException(
+        kIsWeb
+            ? 'Google sign-in is running in Flutter Web right now. Set GOOGLE_WEB_CLIENT_ID in .env or run the Android build instead of Chrome.'
+            : 'Google sign-in is missing its client ID configuration. Check GOOGLE_WEB_CLIENT_ID in .env.',
+        null,
+      );
+    }
+
+    if (googleUser == null) {
+      throw const _AuthApiException('Google sign-in was cancelled.', null);
+    }
+
+    final googleAuth = await googleUser.authentication;
+    if (googleAuth.idToken == null || googleAuth.idToken!.isEmpty) {
+      throw const _AuthApiException(
+        'Google sign-in did not return an ID token. Check GOOGLE_WEB_CLIENT_ID configuration.',
+        null,
+      );
+    }
+    if (googleAuth.accessToken == null || googleAuth.accessToken!.isEmpty) {
+      throw const _AuthApiException(
+        'Google sign-in did not return an access token.',
+        null,
+      );
+    }
+
+    final response = await http
+        .post(
+          _uri('/v1/auth/sign-in/google'),
+          headers: _jsonHeaders,
+          body: jsonEncode({
+            'idToken': googleAuth.idToken,
+            'accessToken': googleAuth.accessToken,
+            'email': googleUser.email,
+            'fullName': googleUser.displayName,
+            'avatarUrl': googleUser.photoUrl,
+          }),
+        )
+        .timeout(EnvironmentConfig.authTimeout);
+
+    if (response.statusCode != 200) {
+      throw _buildApiException(response);
+    }
+
+    final payload = _decodeJson(response);
+    final session = _requireSession(payload);
+    await _saveUserData(
+      session.user,
+      session.accessToken,
+      session.refreshToken,
+    );
+    return true;
+  }
+
+  static Future<bool> signInWithBiometrics() async {
+    final token = await _resolveAccessToken();
+    if (token == null || token.isEmpty) {
+      throw const _AuthApiException(
+        'No saved session found. Sign in once with email or Google first.',
+        401,
+      );
+    }
+
+    final biometricService = BiometricAuthService.instance;
+    final result = await biometricService.authenticate(
+      reason: 'Use your fingerprint or face unlock to continue',
+      stickyAuth: true,
+    );
+
+    if (!result.isAuthenticated) {
+      throw _AuthApiException(
+        BiometricAuthService.getResultMessage(result),
+        null,
+      );
+    }
+
+    final user = await getCurrentUser();
+    if (user == null) {
+      throw const _AuthApiException(
+        'Your saved session has expired. Sign in again with email or Google.',
+        401,
+      );
+    }
+
     return true;
   }
 
@@ -425,6 +547,28 @@ class AuthService {
         ..._jsonHeaders,
         'Authorization': 'Bearer $token',
       };
+
+  static String get _googleWebClientId =>
+      dotenv.env['GOOGLE_WEB_CLIENT_ID']?.trim() ?? '';
+
+  static String? _googleClientId(String webClientId) {
+    if (kIsWeb) {
+      return webClientId;
+    }
+
+    final iosClientId = dotenv.env['GOOGLE_IOS_CLIENT_ID']?.trim();
+    if (iosClientId == null || iosClientId.isEmpty) {
+      return null;
+    }
+
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+        return iosClientId;
+      default:
+        return null;
+    }
+  }
 }
 
 class _AuthSession {

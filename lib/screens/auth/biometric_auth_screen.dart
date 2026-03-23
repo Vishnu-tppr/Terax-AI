@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:terax_ai_app/providers/auth_provider.dart';
 import 'package:terax_ai_app/utils/theme/app_theme.dart';
 
 class BiometricAuthScreen extends StatefulWidget {
@@ -48,17 +50,26 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen>
   }
 
   Future<void> _authenticateWithBiometrics() async {
-    try {
-      // Skip biometric check for now and go directly to main
-      // This ensures the app doesn't get stuck
+    final authProvider = context.read<AuthProvider>();
+    final success = await authProvider.signInWithBiometrics();
+    if (!mounted) {
+      return;
+    }
+
+    if (success) {
+      context.go('/main');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            authProvider.error ??
+                'Biometric unlock is unavailable. Sign in once first.',
+          ),
+          backgroundColor: AppTheme.errorColor,
+        ),
+      );
       if (mounted) {
-        context.go('/main');
-      }
-    } catch (e) {
-      print('Error during authentication: $e');
-      // Navigate to main screen anyway
-      if (mounted) {
-        context.go('/main');
+        context.go('/signin');
       }
     }
   }

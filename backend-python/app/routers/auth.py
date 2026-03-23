@@ -6,6 +6,7 @@ from app.config import get_settings
 from app.dependencies import AuthenticatedUser, get_current_user
 from app.schemas import (
     ChangePasswordRequest,
+    GoogleSignInRequest,
     RefreshSessionRequest,
     ResetPasswordRequest,
     SignInRequest,
@@ -13,6 +14,7 @@ from app.schemas import (
 )
 from app.supabase_helpers import (
     auth_response_payload,
+    coerce_dict,
     create_public_client,
     ensure_profile,
     get_attr,
@@ -84,6 +86,47 @@ def sign_in(payload: SignInRequest) -> dict:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(exc)) from exc
 
     return auth_response_payload(response)
+
+
+@router.post("/sign-in/google")
+def sign_in_with_google(payload: GoogleSignInRequest) -> dict:
+    require_supabase_config()
+    client = create_public_client()
+
+    try:
+        response = client.auth.sign_in_with_id_token(
+            {
+                "provider": "google",
+                "token": payload.id_token,
+                "access_token": payload.access_token,
+            }
+        )
+    except Exception as exc:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(exc)) from exc
+
+    user = get_attr(response, "user")
+    profile = None
+    if user is not None:
+        metadata = coerce_dict(get_attr(user, "user_metadata", {}))
+        profile = upsert_profile(
+            user_id=get_attr(user, "id"),
+            email=payload.email or get_attr(user, "email") or "",
+            full_name=(
+                payload.full_name
+                or metadata.get("full_name")
+                or metadata.get("name")
+                or get_attr(user, "email", "Terax User").split("@")[0]
+            ),
+            phone_number=metadata.get("phone_number") or get_attr(user, "phone"),
+            profile_image_url=payload.avatar_url or metadata.get("avatar_url") or metadata.get("picture"),
+            preferences={},
+            is_active=True,
+        )
+
+    result = auth_response_payload(response)
+    if user is not None and profile is not None:
+        result["user"] = serialize_user(user, profile)
+    return result
 
 
 @router.post("/refresh")

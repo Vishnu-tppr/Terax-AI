@@ -22,6 +22,23 @@ class SignInRequest(ApiModel):
     password: str = Field(min_length=6, max_length=128)
 
 
+class GoogleSignInRequest(ApiModel):
+    id_token: str = Field(alias="idToken", min_length=1)
+    access_token: str = Field(alias="accessToken", min_length=1)
+    email: EmailStr | None = None
+    full_name: str | None = Field(
+        default=None,
+        alias="fullName",
+        min_length=2,
+        max_length=120,
+    )
+    avatar_url: str | None = Field(
+        default=None,
+        alias="avatarUrl",
+        max_length=500,
+    )
+
+
 class RefreshSessionRequest(ApiModel):
     access_token: str = Field(alias="accessToken", min_length=1)
     refresh_token: str = Field(alias="refreshToken", min_length=1)

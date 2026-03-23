@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:terax_ai_app/providers/auth_provider.dart';
 import 'package:terax_ai_app/utils/theme/app_theme.dart';
 
@@ -13,9 +13,9 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _fadeAnimation;
-  late Animation<double> _scaleAnimation;
+  late final AnimationController _animationController;
+  late final Animation<double> _fadeAnimation;
+  late final Animation<double> _scaleAnimation;
 
   @override
   void initState() {
@@ -28,81 +28,44 @@ class _SplashScreenState extends State<SplashScreen>
     _fadeAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeIn,
-    ));
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeIn,
+      ),
+    );
 
     _scaleAnimation = Tween<double>(
       begin: 0.8,
       end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.elasticOut,
-    ));
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.elasticOut,
+      ),
+    );
 
     _animationController.forward();
 
-    // Check authentication status after animation
-    Future.delayed(const Duration(seconds: 2), () {
-      print('🔍 [SplashScreen] Starting auth check after 2 second delay');
-      _checkAuthStatus();
-    });
+    Future.delayed(const Duration(seconds: 2), _checkAuthStatus);
   }
 
   Future<void> _checkAuthStatus() async {
-    print(
-        '🔍 EMERGENCY FIX [SplashScreen] _checkAuthStatus started - Testing Immediate Navigation');
-
-    // EMERGENCY FIX: Try immediate navigation first to test if navigation works
-    if (mounted) {
-      print(
-          '🔍 EMERGENCY FIX [SplashScreen] Attempting immediate navigation to /main');
-      try {
-        await Future.delayed(const Duration(milliseconds: 100));
-        if (mounted) {
-          context.go('/main');
-          print(
-              '🔍 EMERGENCY FIX [SplashScreen] Immediate navigation succeeded');
-          return; // Exit after successful immediate navigation
-        }
-      } catch (e) {
-        print(
-            '🔍 EMERGENCY FIX [SplashScreen] Immediate navigation failed: $e - trying original logic');
-      }
-    }
-
-    // If immediate navigation fails, use original logic as fallback
-    print('🔍 [SplashScreen] _checkAuthStatus started - Original Logic');
-
     try {
-      // Get the auth provider
-      final authProvider = Provider.of<AuthProvider>(context, listen: false);
-
-      // Wait for the auth provider to complete initialization
+      final authProvider = context.read<AuthProvider>();
       await authProvider.waitForInitialization();
 
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
-      print(
-          '🔍 [SplashScreen] Auth initialization complete. Logged in: ${authProvider.isLoggedIn}');
-
-      // Navigate based on authentication state
       if (authProvider.isLoggedIn) {
-        print('🔍 [SplashScreen] User is logged in, navigating to main screen');
         context.go('/main');
       } else {
-        print(
-            '🔍 [SplashScreen] User is not logged in, navigating to signin screen');
         context.go('/signin');
       }
-    } catch (e, stackTrace) {
-      print('❌ [SplashScreen] Error during auth check: $e');
-      print('❌ [SplashScreen] Stack trace: $stackTrace');
-
-      // On error, direct to signin for safety
+    } catch (_) {
       if (mounted) {
-        print('🔍 [SplashScreen] Error occurred, defaulting to signin screen');
         context.go('/signin');
       }
     }
@@ -129,7 +92,6 @@ class _SplashScreenState extends State<SplashScreen>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // App Logo/Icon
                     Container(
                       width: 120,
                       height: 120,
@@ -151,8 +113,6 @@ class _SplashScreenState extends State<SplashScreen>
                       ),
                     ),
                     const SizedBox(height: 32),
-
-                    // App Name
                     Text(
                       'Terax AI',
                       style: Theme.of(context).textTheme.displayLarge?.copyWith(
@@ -161,8 +121,6 @@ class _SplashScreenState extends State<SplashScreen>
                           ),
                     ),
                     const SizedBox(height: 8),
-
-                    // Tagline
                     Text(
                       'Personal Safety',
                       style:
@@ -172,8 +130,6 @@ class _SplashScreenState extends State<SplashScreen>
                               ),
                     ),
                     const SizedBox(height: 48),
-
-                    // Loading indicator
                     SizedBox(
                       width: 40,
                       height: 40,
@@ -185,8 +141,6 @@ class _SplashScreenState extends State<SplashScreen>
                       ),
                     ),
                     const SizedBox(height: 24),
-
-                    // Loading text
                     Text(
                       'Loading...',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(

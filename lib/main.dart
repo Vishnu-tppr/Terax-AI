@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:terax_ai_app/screens/auth/biometric_auth_screen.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:terax_ai_app/providers/safe_zones_provider.dart';
@@ -26,6 +27,17 @@ void main() async {
 
     if (kDebugMode) {
       debugPrint('Initializing TeraxAI App...');
+    }
+
+    try {
+      await dotenv.load(fileName: '.env');
+      if (kDebugMode) {
+        debugPrint('Environment file loaded successfully');
+      }
+    } catch (envError) {
+      if (kDebugMode) {
+        debugPrint('No .env file loaded, using built-in defaults: $envError');
+      }
     }
 
     // Initialize API key for immediate use (non-blocking)

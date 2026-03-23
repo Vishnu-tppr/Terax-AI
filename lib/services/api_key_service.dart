@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:dio/dio.dart';
+import '../config/api_config.dart';
 
 enum ApiKeyType {
   backend,
@@ -222,8 +223,8 @@ class ApiKeyService {
   /// Validate backend API key
   Future<bool> _validateBackendApiKey(String key) async {
     try {
-      final backendUrl = dotenv.env['BACKEND_BASE_URL'];
-      if (backendUrl == null) return false;
+      final backendUrl = EnvironmentConfig.backendBaseUrl;
+      if (backendUrl.isEmpty) return false;
 
       final dio = Dio();
       final response = await dio.get(
